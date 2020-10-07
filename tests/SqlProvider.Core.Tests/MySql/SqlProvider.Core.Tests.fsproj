@@ -33,12 +33,12 @@
   </ItemGroup>
   <!-- .NET 4.61 is Net Standard 2.0 compatible so use what ever libraries.
       However non-Windows typeprovider will call Mono on compile-time. Mono is not Net Standard 2.0 compatible.
-      So Mono will use Net 4.5.1 libraries. Typeprovider handles that on compilation, and after compile your 
+      So Mono will use Net 4.7.2 libraries. Typeprovider handles that on compilation, and after compile your
       assembly will ve .NET Core compatible. -->
   <ItemGroup><!-- Mono fix, and .NET Standard fix -->
     <Reference Condition="'$(IsWindows)' != 'true' Or '$(TargetFramework)' == 'netstandard2.0'" Include="FSharp.Data.SqlProvider">
-      <HintPath>../../../bin/net451/FSharp.Data.SqlProvider.dll</HintPath>
-      <!--HintPath>../../packages/SQLProvider/lib/net451/FSharp.Data.SqlProvider.dll</HintPath-->
+      <HintPath>../../../bin/net472/FSharp.Data.SqlProvider.dll</HintPath>
+      <!--HintPath>../../packages/SQLProvider/lib/net472/FSharp.Data.SqlProvider.dll</HintPath-->
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -71,7 +71,7 @@
   <!-- MySql.Data.dll is currently not CoreApp 2.0 compatible in Nuget. But you can use the local if you want.
        Just uncomment these commented lines.
 	   -->
-  <!-- 
+  <!--
   <Target Name="MySqlDataCopyLibrariesWin">
     <Exec Command="xcopy ..\..\..\packages\standard\System.Security.Principal.Windows\lib\netstandard2.0\System.Security.Principal.Windows.dll dataTemp\ /y" />
     <Exec Command="xcopy ..\..\..\packages\standard\System.Text.Encoding.CodePages\lib\netstandard2.0\System.Text.Encoding.CodePages.dll dataTemp\ /y" />
@@ -85,7 +85,7 @@
     <Reference Include="MySql.Data.dll">
       <HintPath>core/MySql.Data.dll</HintPath>
     </Reference>
-  </ItemGroup>    
+  </ItemGroup>
   -->
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <!-- Using driver MySql.Data.dll --><!--

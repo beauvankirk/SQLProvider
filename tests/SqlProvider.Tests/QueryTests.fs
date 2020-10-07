@@ -1,5 +1,5 @@
 #if INTERACTIVE
-#r @"../../bin/net451/FSharp.Data.SqlProvider.dll"
+#r @"../../bin/net472/FSharp.Data.SqlProvider.dll"
 #r @"../../packages/NUnit/lib/nunit.framework.dll"
 #else
 module QueryTests
@@ -20,71 +20,71 @@ let connectionString = @"Data Source=./db/northwindEF.db;Version=3;Read Only=fal
 
 type sql = SqlDataProvider<Common.DatabaseProviderTypes.SQLITE, connectionString, CaseSensitivityChange=Common.CaseSensitivityChange.ORIGINAL>
 FSharp.Data.Sql.Common.QueryEvents.SqlQueryEvent |> Event.add (printfn "Executing SQL: %O")
-let inline isNull (x:^T when ^T : not struct) = obj.ReferenceEquals (x, null)   
+let inline isNull (x:^T when ^T : not struct) = obj.ReferenceEquals (x, null)
 
 let isMono = Type.GetType ("Mono.Runtime") <> null
 
 [<Test>]
 let ``simple select with contains query``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             select cust.CustomerId
             contains "ALFKI"
         }
-    Assert.IsTrue(qry)    
+    Assert.IsTrue(qry)
 
 [<Test>]
 let ``simple select with contains query with where``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where (cust.City <> "")
             select cust.CustomerId
             contains "ALFKI"
         }
-    Assert.IsTrue(qry)    
+    Assert.IsTrue(qry)
 
 [<Test>]
 let ``simple select with contains query when not exists``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             select cust.CustomerId
             contains "ALFKI2"
         }
-    Assert.IsFalse(qry)    
+    Assert.IsFalse(qry)
 
 [<Test >]
 let ``simple select with count``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             select cust.CustomerId
             count
         }
-    Assert.AreEqual(91, qry)   
+    Assert.AreEqual(91, qry)
 
 [<Test >] // Generates COUNT(DISTINCT CustomerId)
 let ``simple select with distinct count``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             select cust.CustomerId
             distinct
             count
         }
-    Assert.AreEqual(91, qry)   
+    Assert.AreEqual(91, qry)
 
 [<Test; Ignore("AVG-DISTINCT not supported. Generates 'DISTINCT AVG(UnitPrice)' where maybe should generate 'AVG(DISTINCT UnitPrice)' ")>]
 let ``simple select with distinct avg``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for o in dc.Main.OrderDetails do
             distinct
@@ -95,72 +95,72 @@ let ``simple select with distinct avg``() =
 [<Test; Ignore("Not Supported")>]
 let ``simple select with last``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             sortBy cust.CustomerId
             select cust.CustomerId
             last
         }
-    Assert.AreEqual("WOLZA", qry)   
+    Assert.AreEqual("WOLZA", qry)
 
 [<Test; Ignore("Not Supported")>]
 let ``simple select with last or default when not exists``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where (cust.CustomerId = "ZZZZ")
             select cust.CustomerId
             lastOrDefault
         }
-    Assert.AreEqual(null, qry)   
+    Assert.AreEqual(null, qry)
 
 [<Test>]
 let ``simple exists when exists``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             exists (cust.CustomerId = "WOLZA")
         }
-    Assert.AreEqual(true, qry)  
+    Assert.AreEqual(true, qry)
 
 [<Test; Ignore("Not Supported")>]
 let ``simple select with last or default when exists``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where (cust.CustomerId = "WOLZA")
             select cust.CustomerId
             lastOrDefault
         }
-    Assert.AreEqual("WOLZA", qry)  
+    Assert.AreEqual("WOLZA", qry)
 
 [<Test >]
 let ``simple select with exactly one``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where (cust.CustomerId = "ALFKI")
             select cust.CustomerId
             exactlyOne
         }
-    Assert.AreEqual("ALFKI", qry)  
+    Assert.AreEqual("ALFKI", qry)
 
 [<Test >]
 let ``option from join select with exactly one``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             join ord in dc.Main.Orders on (cust.CustomerId = ord.CustomerId)
             where (cust.CustomerId = "ALFKI" && ord.OrderId = (int64 10643))
             select (Some (cust, ord))
             exactlyOneOrDefault
-        } 
+        }
 
     match qry with
     | Some(cust, ord) ->
@@ -174,7 +174,7 @@ let ``option from join select with exactly one``() =
 [<Test>]
 let ``over 8 joins test``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             join ord1 in dc.Main.Orders on (cust.CustomerId = ord1.CustomerId)
@@ -193,7 +193,7 @@ let ``over 8 joins test``() =
                 )
             select (Some (cust, ord9))
             exactlyOneOrDefault
-        } 
+        }
 
     match qry with
     | Some(cust, ord) ->
@@ -207,7 +207,7 @@ let ``over 8 joins test``() =
 [<Test>]
 let ``outer join with inner join test``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             join ord1 in dc.Main.Orders on (cust.CustomerId = ord1.CustomerId)
@@ -220,39 +220,39 @@ let ``outer join with inner join test``() =
                 )
             select (Some (cust, ord1))
             head
-        } 
+        }
 
     Assert.AreNotEqual(None,qry)
 
 let ``simple select two queries test``() =
     let dc = sql.GetDataContext(SelectOperations.DatabaseSide)
     // Works also with: let dc = sql.GetDataContext(SelectOperations.DotNetSide)
-    let itm1 = 
+    let itm1 =
         query {
             for cust in dc.Main.Customers do
             select (cust)
             head
-        } 
-    let itm2, isOk = 
+        }
+    let itm2, isOk =
         query {
             for o in dc.Main.Orders do
             where(o.CustomerId = itm1.CustomerId)
             select (o, (o.CustomerId = itm1.CustomerId))
             head
-        } 
+        }
     Assert.AreEqual(itm1.CustomerId, itm2.CustomerId)
     Assert.IsTrue isOk
 
 [<Test >]
 let ``option from simple select with exactly one``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where (cust.CustomerId = "ALFKI")
             select (Some cust)
             exactlyOneOrDefault
-        } 
+        }
 
     match qry with
     | Some cust ->
@@ -265,12 +265,12 @@ let ``option from simple select with exactly one``() =
         dc.SubmitUpdates()
     | None ->
         Assert.Fail()
-     
+
 
 [<Test>]
 let ``simple select with exactly one when not exists``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where (cust.CustomerId = "ZZZZ")
@@ -278,186 +278,186 @@ let ``simple select with exactly one when not exists``() =
             exactlyOneOrDefault
         }
     Assert.IsTrue(isNull(qry))
-    Assert.AreEqual(null, qry)  
+    Assert.AreEqual(null, qry)
 
 
 [<Test >]
 let ``simple select with head``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where (cust.CustomerId = "ALFKI")
             select cust.CustomerId
             head
         }
-    Assert.AreEqual("ALFKI", qry)  
+    Assert.AreEqual("ALFKI", qry)
 
 [<Test>]
 let ``simple select with head or Default``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where (cust.CustomerId = "ALFKI")
             select cust.CustomerId
             headOrDefault
         }
-    Assert.AreEqual("ALFKI", qry)  
+    Assert.AreEqual("ALFKI", qry)
 
 [<Test>]
 let ``simple select with head or Default when not exists``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where (cust.CustomerId = "ZZZZ")
             select cust.CustomerId
             headOrDefault
         }
-    Assert.AreEqual(null, qry)  
+    Assert.AreEqual(null, qry)
 
 [<Test >]
-let ``simple select query``() = 
+let ``simple select query``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             select cust
         } |> Seq.toArray
-    
+
     CollectionAssert.IsNotEmpty qry
-    Assert.AreEqual("Obere Str. 57", qry.[0].Address)  
+    Assert.AreEqual("Obere Str. 57", qry.[0].Address)
 
 
 [<Test>]
-let ``simplest select query into temp``() = 
+let ``simplest select query into temp``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             select (cust.City, cust.Country) into y
             select (snd y, fst y)
         } |> Seq.toArray
-    
+
     CollectionAssert.IsNotEmpty qry
     Assert.AreEqual("Germany", fst qry.[0])
 
 [<Test>]
-let ``simplest select into where``() = 
+let ``simplest select into where``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             select (cust.City + "te") into y
             select (y+"st") into y
             where (y <> "Helsinktest")
         } |> Seq.toArray
-    
+
     CollectionAssert.IsNotEmpty qry
     CollectionAssert.Contains(qry, "Aachentest")
 
 [<Test>]
-let ``simplest select query let temp``() = 
+let ``simplest select query let temp``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             let y = cust.City
             select cust.Address
         } |> Seq.toArray
-    
+
     CollectionAssert.IsNotEmpty qry
     CollectionAssert.Contains(qry, "Obere Str. 57")
 
 [<Test>]
-let ``simple select query let temp nested``() = 
+let ``simple select query let temp nested``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             let y1 = cust.Address
             let y2 = cust.City
             select (y1, y2)
         } |> Seq.toArray
-    
+
     CollectionAssert.IsNotEmpty qry
     Assert.AreEqual("Obere Str. 57", fst qry.[0])
 
 [<Test>]
-let ``simple select query let temp``() = 
+let ``simple select query let temp``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             let y = cust.City + "test"
             select y
         } |> Seq.toArray
-    
+
     CollectionAssert.IsNotEmpty qry
     CollectionAssert.Contains(qry, "Berlintest")
-    
+
     //Assert.AreEqual("Aachentest", qry.[0])
     //Assert.AreEqual("Berlintest", qry.[0])
 
 
 [<Test>]
-let ``simple select query let where``() = 
+let ``simple select query let where``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             let y = cust.City + "test"
             where (cust.Address <> "")
             select y
         } |> Seq.toArray
-    
+
     CollectionAssert.IsNotEmpty qry
     CollectionAssert.Contains(qry, "Berlintest")
 
 [<Test>]
-let ``simple select query let temp used in where``() = 
+let ``simple select query let temp used in where``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             let y = cust.City + "test"
             where (y <> "")
             select y
         } |> Seq.toArray
-    
+
     CollectionAssert.IsNotEmpty qry
     CollectionAssert.Contains(qry, "Berlintest")
 
 [<Test>]
-let ``simple select query let temp used in select database``() = 
+let ``simple select query let temp used in select database``() =
     let dc = sql.GetDataContext(SelectOperations.DatabaseSide)
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             let t1 = cust.City + "te"
             select (t1 + "st", cust.PostalCode)
         } |> Seq.toArray
-    
+
     CollectionAssert.IsNotEmpty qry
     Assert.AreEqual("Berlintest", fst qry.[0])
 
 [<Test >]
-let ``simple select query with operations in select``() = 
+let ``simple select query with operations in select``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             select (cust.Country + " " + cust.Address + (1).ToString())
         } |> Seq.toArray
-    
+
     CollectionAssert.IsNotEmpty qry
     CollectionAssert.Contains(qry, "Germany Berliner Platz 431")
 
 [<Test >]
 let ``simple select where query``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where (cust.CustomerId = "ALFKI")
@@ -472,7 +472,7 @@ let ``simple select where query``() =
 [<Test >]
 let ``simple select where null query``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where (cust.CustomerId <> null)
@@ -487,7 +487,7 @@ let ``simple select where null query``() =
 [<Test >]
 let ``simple select where query right side``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where ("ALFKI" = cust.CustomerId)
@@ -501,7 +501,7 @@ let ``simple select where query right side``() =
 [<Test >]
 let ``simple select where query between col properties``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for order in dc.Main.Orders do
             where (order.ShippedDate > order.RequiredDate)
@@ -514,7 +514,7 @@ let ``simple select where query between col properties``() =
 [<Test >]
 let ``simple nth query``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             select cust
@@ -526,7 +526,7 @@ let ``simple nth query``() =
 [<Test >]
 let ``simple select where not query``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where (not(cust.CustomerId = "ALFKI"))
@@ -540,7 +540,7 @@ let ``simple select where not query``() =
 let ``simple select where in query``() =
     let dc = sql.GetDataContext()
     let arr = ["ALFKI"; "ANATR"; "AROUT"]
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where (arr.Contains(cust.CustomerId))
@@ -552,12 +552,12 @@ let ``simple select where in query``() =
     Assert.AreEqual(3, qry.Length)
     Assert.IsTrue(qry.Contains("ANATR"))
 
-    
+
 [<Test >]
 let ``simple select where not-in query``() =
     let dc = sql.GetDataContext()
     let arr = ["ALFKI"; "ANATR"; "AROUT"]
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where (not(arr.Contains(cust.CustomerId)))
@@ -573,14 +573,14 @@ let ``simple select where not-in query``() =
 let ``simple select where in queryable query``() =
 
     let dc = sql.GetDataContext()
-    let query1 = 
+    let query1 =
         query {
             for cust in dc.Main.Customers do
             where (cust.City="London")
             select cust.CustomerId
         }
 
-    let query2 = 
+    let query2 =
         query {
             for cust in dc.Main.Customers do
             where (query1.Contains(cust.CustomerId))
@@ -596,14 +596,14 @@ let ``simple select where in queryable query``() =
 let ``simple select where inner-join box-check and not in queryable query``() =
 
     let dc = sql.GetDataContext()
-    let query1 = 
+    let query1 =
         query {
             for cust in dc.Main.Customers do
             where (cust.City="London")
             select cust.CustomerId
         }
 
-    let query2 = 
+    let query2 =
         query {
             for cust in dc.Main.Customers do
             for ord in (!!) cust.``main.Orders by CustomerID`` do
@@ -621,7 +621,7 @@ let ``simple select where inner-join box-check and not in queryable query``() =
 let ``simple select where in query custom syntax``() =
     let dc = sql.GetDataContext()
     let arr = ["ALFKI"; "ANATR"; "AROUT"]
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where (cust.CustomerId |=| arr)
@@ -635,7 +635,7 @@ let ``simple select where in query custom syntax``() =
 [<Test >]
 let ``simple select where like query``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where (cust.CustomerId.Contains("a"))
@@ -648,7 +648,7 @@ let ``simple select where like query``() =
 [<Test >]
 let ``simple select where query with operations in where``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where (cust.CustomerId = "ALFKI" && (cust.City.StartsWith("B")))
@@ -660,40 +660,40 @@ let ``simple select where query with operations in where``() =
     Assert.AreEqual("Berlin", qry.[0].City)
 
 [<Test>]
-let ``simple select query with minBy``() = 
+let ``simple select query with minBy``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for ord in dc.Main.OrderDetails do
             minBy (decimal ord.Discount)
-        }   
+        }
     Assert.AreEqual(0m, qry)
 
 [<Test>]
-let ``simple select query with minBy2``() = 
+let ``simple select query with minBy2``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for ord in dc.Main.OrderDetails do
             minBy (ord.Discount)
-        }   
+        }
     Assert.AreEqual(0., qry)
 
 
 [<Test>]
-let ``simple select query with minBy DateTime``() = 
+let ``simple select query with minBy DateTime``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for emp in dc.Main.Employees do
             minBy (emp.BirthDate)
-        }   
+        }
     Assert.AreEqual(DateTime(1937, 09, 19), qry)
 
 [<Test>]
-let ``simple select query with sumBy``() = 
+let ``simple select query with sumBy``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for od in dc.Main.OrderDetails do
             sumBy od.UnitPrice
@@ -702,10 +702,10 @@ let ``simple select query with sumBy``() =
     Assert.Less(56499m, qry)
 
 [<Test; Ignore("Not supported, but you can do this via: query { ... select od.UnitPrice } |> Seq.sumAsync or |> Seq.sumQuery")>]
-let ``simple select query with sumBy join``() = 
+let ``simple select query with sumBy join``() =
     let dc = sql.GetDataContext()
 
-    let qry = 
+    let qry =
         query {
             for od in dc.Main.OrderDetails do
             join o in dc.Main.Orders on (od.OrderId=o.OrderId)
@@ -715,10 +715,10 @@ let ``simple select query with sumBy join``() =
     Assert.Greater(56501m, qry)
     Assert.Less(56499m, qry)
 
-let ``simple where before join test``() = 
+let ``simple where before join test``() =
     let dc = sql.GetDataContext()
 
-    let qry = 
+    let qry =
         query {
             for od in dc.Main.OrderDetails do
             where(od.OrderId > 0L)
@@ -731,10 +731,10 @@ let ``simple where before join test``() =
     Assert.LessOrEqual((fst qry.[0]), (fst qry.[1000]))
     CollectionAssert.Contains(qry, (10257L, 10257L))
 
-let ``simple where before join test2``() = 
+let ``simple where before join test2``() =
     let dc = sql.GetDataContext()
 
-    let qry = 
+    let qry =
         query {
             for od in dc.Main.OrderDetails do
             where(od.UnitPrice > 100m)
@@ -746,10 +746,10 @@ let ``simple where before join test2``() =
     Assert.AreEqual(qry.Length, 46)
     Assert.LessOrEqual(qry.[0].ShipCity, qry.[40].ShipCity)
 
-let ``simple where before join test3``() = 
+let ``simple where before join test3``() =
     let dc = sql.GetDataContext()
 
-    let qry = 
+    let qry =
         query {
             for od in dc.Main.OrderDetails do
             for prod in od.``main.Products by ProductID`` do
@@ -765,9 +765,9 @@ let ``simple where before join test3``() =
     Assert.LessOrEqual(qry.[0].ShipCity, qry.[20].ShipCity)
 
 [<Test>]
-let ``simple select query with sumBy times two``() = 
+let ``simple select query with sumBy times two``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for od in dc.Main.OrderDetails do
             sumBy (od.UnitPrice*od.UnitPrice-2m)
@@ -777,9 +777,9 @@ let ``simple select query with sumBy times two``() =
 
 
 [<Test>]
-let ``simple select query with averageBy``() = 
+let ``simple select query with averageBy``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for od in dc.Main.OrderDetails do
             averageBy od.UnitPrice
@@ -787,9 +787,9 @@ let ``simple select query with averageBy``() =
     Assert.Greater(27m, qry)
     Assert.Less(26m, qry)
 
-let ``simple select query with averageBy length``() = 
+let ``simple select query with averageBy length``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for c in dc.Main.Customers do
             averageBy (decimal(c.ContactName.Length))
@@ -799,9 +799,9 @@ let ``simple select query with averageBy length``() =
 
 
 [<Test>]
-let ``simplest select query with groupBy``() = 
+let ``simplest select query with groupBy``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             groupBy cust.City
@@ -810,9 +810,9 @@ let ``simplest select query with groupBy``() =
     Assert.IsNotEmpty(qry)
 
 [<Test>]
-let ``simplest select query with groupBy 2 columns``() = 
+let ``simplest select query with groupBy 2 columns``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             groupBy (cust.City, cust.Address)
@@ -821,9 +821,9 @@ let ``simplest select query with groupBy 2 columns``() =
     Assert.IsNotEmpty(qry)
 
 [<Test>]
-let ``simplest select query with groupBy aggregate``() = 
+let ``simplest select query with groupBy aggregate``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for o in dc.Main.Orders do
             groupBy o.OrderDate.Date into g
@@ -833,9 +833,9 @@ let ``simplest select query with groupBy aggregate``() =
     Assert.IsNotEmpty(qry)
 
 [<Test>]
-let ``simplest select query with groupBy aggregate temp total``() = 
+let ``simplest select query with groupBy aggregate temp total``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for o in dc.Main.Orders do
             groupBy o.OrderDate.Date into g
@@ -849,9 +849,9 @@ let ``simplest select query with groupBy aggregate temp total``() =
     Assert.IsNotEmpty(qry)
 
 [<Test>]
-let ``simplest select query with groupBy constant``() = 
+let ``simplest select query with groupBy constant``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for p in dc.Main.Products do
             groupBy 1 into g
@@ -862,9 +862,9 @@ let ``simplest select query with groupBy constant``() =
     Assert.Greater(fst(qry), snd(qry))
 
 [<Test>]
-let ``simplest select query with groupBy constant with operation``() = 
+let ``simplest select query with groupBy constant with operation``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for p in dc.Main.Products do
             groupBy 1 into g
@@ -874,9 +874,9 @@ let ``simplest select query with groupBy constant with operation``() =
     Assert.AreEqual(qry, 24)
 
 [<Test; Ignore("Not Supported")>]
-let ``simple select query with join groupBy constant``() = 
+let ``simple select query with join groupBy constant``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for o in dc.Main.Orders do
             join od in dc.Main.OrderDetails on (o.OrderId = od.OrderId)
@@ -891,22 +891,22 @@ let ``simple select query with join groupBy constant``() =
     Assert.IsNotEmpty(qry)
 
 [<Test>]
-let ``simple select query with groupBy``() = 
+let ``simple select query with groupBy``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             groupBy cust.City into c
             select (c.Key, c.Count())
         }
-    let res = qry |> dict  
+    let res = qry |> dict
     Assert.IsNotEmpty(res)
     Assert.AreEqual(6, res.["London"])
 
 [<Test>]
-let ``simple select query with groupBy and then sort``() = 
+let ``simple select query with groupBy and then sort``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for order in dc.Main.Orders do
             groupBy (order.ShipCity) into ts
@@ -915,28 +915,28 @@ let ``simple select query with groupBy and then sort``() =
             thenBy (ts.Key)
             select (ts.Key, ts.Average(fun o -> o.Freight))
         }
-    let res = qry |> dict  
+    let res = qry |> dict
     Assert.IsNotEmpty(res)
     let lonAvg = res.["London"]
     Assert.Less(50, lonAvg)
     Assert.Greater(100, lonAvg)
 
 [<Test>]
-let ``simple select query with groupBy multiple columns``() = 
+let ``simple select query with groupBy multiple columns``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for p in dc.Main.Products do
             groupBy (p.ReorderLevel, p.CategoryId) into c
             select (c.Key, c.Sum(fun i -> i.UnitPrice))
         }
-    let res = qry |> dict  
+    let res = qry |> dict
     Assert.IsNotEmpty(res)
 
 [<Test>]
-let ``simple select query with groupBy sum``() = 
+let ``simple select query with groupBy sum``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for od in dc.Main.OrderDetails do
             groupBy od.ProductId into p
@@ -958,11 +958,11 @@ let ``simple select query with groupBy sum``() =
     Assert.Greater(699m, plusones)
     Assert.Less(689m, plusones)
     Assert.Greater(plustwos, plusones)
-        
+
 [<Test>]
-let ``simple select query with groupBy having count``() = 
+let ``simple select query with groupBy having count``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             groupBy cust.City into c
@@ -970,14 +970,14 @@ let ``simple select query with groupBy having count``() =
             where (c.Count() < 6)
             select (c.Key, c.Count())
         }
-    let res = qry |> dict  
+    let res = qry |> dict
     Assert.IsNotEmpty(res)
     Assert.AreEqual(3, res.["Buenos Aires"])
 
 [<Test>]
-let ``simple select query with groupBy where and having``() = 
+let ``simple select query with groupBy where and having``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for emp in dc.Main.Employees do
             where (emp.Country = "USA")
@@ -993,68 +993,68 @@ let ``simple select query with groupBy where and having``() =
 
 
 [<Test>]
-let ``simple select query with groupBy having key``() = 
+let ``simple select query with groupBy having key``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             groupBy cust.City into c
-            where (c.Key = "London") 
-            select (c.Key, c.Count()) 
+            where (c.Key = "London")
+            select (c.Key, c.Count())
         } |> Seq.toList
-    let res = qry |> dict  
+    let res = qry |> dict
     Assert.IsNotEmpty(res)
     Assert.AreEqual(6, res.["London"])
 
-let ``simple select query with groupBy having nested``() = 
+let ``simple select query with groupBy having nested``() =
     let dc = sql.GetDataContext()
-    let subQry = 
+    let subQry =
         query {
             for cust in dc.Main.Customers do
             groupBy cust.City into c
-            where (c.Key = "London") 
-            select (c.Key) 
+            where (c.Key = "London")
+            select (c.Key)
         }
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where (subQry.Contains(cust.City))
-            select (cust.CustomerId) 
+            select (cust.CustomerId)
         } |> Seq.toArray
 
     Assert.IsNotEmpty(qry)
     Assert.Contains("AROUT", qry)
 
 [<Test>]
-let ``simple select query with groupBy date``() = 
+let ``simple select query with groupBy date``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for emp in dc.Main.Employees do
             groupBy emp.BirthDate into e
             select (e.Key, e.Count())
         }
-    let res = qry |> dict  
+    let res = qry |> dict
     Assert.IsNotEmpty(res)
 
 [<Test>]
-let ``simple select query with groupBy2``() = 
+let ``simple select query with groupBy2``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where (cust.City = "London")
             groupBy (cust.Country, cust.City) into c
             select (c.Key, c.Count()+1)
-        } |> dict  
+        } |> dict
     Assert.IsNotNull(qry)
     Assert.AreEqual(7, qry.Sum(fun k -> k.Value))
 
 [<Test>]
-let ``simple select query with groupBy complex operations``() = 
+let ``simple select query with groupBy complex operations``() =
     let dc = sql.GetDataContext(SelectOperations.DatabaseSide)
     let old = System.DateTime(1990,01,01)
-    let qry = 
+    let qry =
         query {
             for o in dc.Main.Orders do
             where (o.OrderDate > old)
@@ -1068,10 +1068,10 @@ let ``simple select query with groupBy complex operations``() =
     Assert.AreEqual(2151.67m, qry.["UK", "London"])
 
 [<Test; Ignore("Not Supported")>]
-let ``simple select query with groupBy join complex operations``() = 
+let ``simple select query with groupBy join complex operations``() =
     let dc = sql.GetDataContext()
     let old = System.DateTime(1990,01,01)
-    let qry = 
+    let qry =
         query {
             for o in dc.Main.Orders do
             join od in dc.Main.OrderDetails on (o.OrderId = od.OrderId)
@@ -1084,42 +1084,42 @@ let ``simple select query with groupBy join complex operations``() =
     Assert.IsNotNull(qry)
 
 [<Test; Ignore("Not Supported")>]
-let ``simple groupValBy item``() = 
+let ``simple groupValBy item``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
-            groupValBy cust.ContactTitle cust.City 
+            groupValBy cust.ContactTitle cust.City
         } |> Seq.toList
     Assert.IsNotEmpty(qry)
 
 [<Test; Ignore("Not Supported")>]
-let ``simple select query with groupValBy``() = 
+let ``simple select query with groupValBy``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             groupValBy cust.ContactTitle cust.City into g
             select (g.Key, g.Count())
-        } |> dict  
+        } |> dict
     Assert.IsNotEmpty(qry)
 
 [<Test; Ignore("Not Supported")>]
-let ``complex select query with groupValBy``() = 
+let ``complex select query with groupValBy``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             groupValBy (cust.ContactTitle, Int32.Parse(cust.PostalCode)) (cust.PostalCode, cust.City) into g
             let maxPlusOne = 1 + query {for i in g do sumBy (snd i) }
             select (snd(g.Key), maxPlusOne)
-        } |> dict  
+        } |> dict
     Assert.IsNotEmpty(qry)
 
 [<Test;>]
-let ``simple if query``() = 
+let ``simple if query``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             if cust.Country = "UK" then select cust.City
@@ -1129,10 +1129,10 @@ let ``simple if query``() =
     CollectionAssert.DoesNotContain(qry, "Helsinki")
 
 [<Test;>]
-let ``simple select query with case``() = 
+let ``simple select query with case``() =
     // SELECT CASE WHEN ([cust].[Country] = @param1) THEN [cust].[City] ELSE @param2 END as [result] FROM main.Customers as [cust]
     let dc = sql.GetDataContext(SelectOperations.DatabaseSide)
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             select (if cust.Country = "UK" then (cust.City)
@@ -1143,10 +1143,10 @@ let ``simple select query with case``() =
     CollectionAssert.Contains(qry, "Outside UK")
 
 [<Test;>]
-let ``simple select query with case on client``() = 
+let ``simple select query with case on client``() =
     // SELECT [Customers].[Country] as 'Country',[Customers].[City] as 'City' FROM main.Customers as [Customers]
     let dc = sql.GetDataContext(SelectOperations.DotNetSide)
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             select (if cust.Country = "UK" then (cust.City)
@@ -1159,33 +1159,33 @@ let ``simple select query with case on client``() =
 [<Test >]
 let ``simple select and sort query``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             sortBy cust.City
             select cust.City
         } |> Seq.toArray
 
-    CollectionAssert.IsNotEmpty qry    
+    CollectionAssert.IsNotEmpty qry
     CollectionAssert.AreEquivalent([|"Aachen"; "Albuquerque"; "Anchorage"|], qry.[0..2])
 
 [<Test >]
 let ``simple select and sort desc query``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             sortByDescending cust.City
             select cust.City
         } |> Seq.toArray
 
-    CollectionAssert.IsNotEmpty qry    
+    CollectionAssert.IsNotEmpty qry
     CollectionAssert.AreEquivalent([|"Århus"; "Warszawa"; "Walla Walla"|], qry.[0..2])
 
 [<Test>]
 let ``simple select and sort query with then by query``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             sortBy cust.Country
@@ -1193,13 +1193,13 @@ let ``simple select and sort query with then by query``() =
             select cust.City
         } |> Seq.toArray
 
-    CollectionAssert.IsNotEmpty qry    
+    CollectionAssert.IsNotEmpty qry
     CollectionAssert.AreEquivalent([|"Buenos Aires"; "Buenos Aires"; "Buenos Aires"; "Graz"|], qry.[0..3])
 
 [<Test>]
 let ``simple select and sort query with then by desc query``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             sortBy cust.Country
@@ -1207,7 +1207,7 @@ let ``simple select and sort query with then by desc query``() =
             select cust.City
         } |> Seq.toArray
 
-    CollectionAssert.IsNotEmpty qry    
+    CollectionAssert.IsNotEmpty qry
     CollectionAssert.AreEquivalent([|"Buenos Aires"; "Buenos Aires"; "Buenos Aires"; "Salzburg"|], qry.[0..3])
 
 [<Test>]
@@ -1240,15 +1240,15 @@ let ``simple sort query with then by desc query with lambda cast to IComparable`
     CollectionAssert.AreEquivalent([|"Berlin"|], qry)
 
 [<Test >]
-let ``simple select query with join``() = 
+let ``simple select query with join``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             join order in dc.Main.Orders on (cust.CustomerId = order.CustomerId)
             select (cust.CustomerId, order.OrderDate)
         } |> Seq.toArray
-    
+
     CollectionAssert.IsNotEmpty qry
     CollectionAssert.AreEquivalent(
         [|
@@ -1260,24 +1260,24 @@ let ``simple select query with join``() =
 
 
 [<Test>]
-let ``simple select query with join and then groupBy``() = 
+let ``simple select query with join and then groupBy``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
                 for cust in dc.Main.Customers do
                 join order in dc.Main.Orders on (cust.CustomerId = order.CustomerId)
                 where(cust.Address <> "Road" && order.ShipName <> "mcboatface")
                 groupBy (cust.City, order.ShipCity) into g
                 select (g.Key, g.Max(fun (c,o) -> c.PostalCode))
-            } 
-    let res = qry |> dict  
+            }
+    let res = qry |> dict
     Assert.IsNotEmpty(res)
     Assert.AreEqual("WX3 6FW", res.["London","London"])
 
 [<Test>]
-let ``simple select query with join and then groupBy 2``() = 
+let ``simple select query with join and then groupBy 2``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
                 for cust in dc.Main.Customers do
                 join order in dc.Main.Orders on (cust.CustomerId = order.CustomerId)
@@ -1286,14 +1286,14 @@ let ``simple select query with join and then groupBy 2``() =
                 groupBy (order.ShipName, order.ShipCity, order2.ShipCity, order.ShipCountry, order2.ShippedDate) into g
                 select (g.Key, g.Max(fun (c,o1,o2) -> c.PostalCode))
             }
-    let res = qry |> Seq.toList  
+    let res = qry |> Seq.toList
     Assert.IsNotEmpty(res)
     Assert.AreEqual(32, res.Length)
 
 [<Test>]
-let ``simple select query with joins and then groupBy``() = 
+let ``simple select query with joins and then groupBy``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
                 for cust in dc.Main.Customers do
                 join order in dc.Main.Orders on (cust.CustomerId = order.CustomerId)
@@ -1301,14 +1301,14 @@ let ``simple select query with joins and then groupBy``() =
                 groupBy (cust.City, order.ShipCity) into g
                 select (g.Key, g.Max(fun (c,o,o2) -> c.PostalCode))
             }
-    let res = qry |> dict  
+    let res = qry |> dict
     Assert.IsNotEmpty(res)
     Assert.AreEqual("WX3 6FW", res.["London","London"])
 
 [<Test; Ignore("Grouping over 4 tables is not supported yet")>]
-let ``simple select query with many joins and then groupBy``() = 
+let ``simple select query with many joins and then groupBy``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
                 for cust in dc.Main.Customers do
                 join order in dc.Main.Orders on (cust.CustomerId = order.CustomerId)
@@ -1317,33 +1317,33 @@ let ``simple select query with many joins and then groupBy``() =
                 groupBy (cust.City, order.ShipCity) into g
                 select (g.Key, g.Max(fun (c,o,o2,o3) -> c.PostalCode))
             }
-    let res = qry |> dict  
+    let res = qry |> dict
     Assert.IsNotEmpty(res)
     Assert.AreEqual("WX3 6FW", res.["London","London"])
 
 [<Test; Ignore("Joining over grouping is not supported yet")>]
-let ``simple select query with groupBy and then join``() = 
+let ``simple select query with groupBy and then join``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             groupBy cust.City into c
             join order in dc.Main.Orders on (c.Key = order.ShipCity)
             select (c.Key, c.Count(), order.ShipCity)
         }
-    let res = qry |> Seq.toList  
+    let res = qry |> Seq.toList
     Assert.IsNotEmpty(res)
 
 [<Test >]
-let ``simple select query with join multi columns``() = 
+let ``simple select query with join multi columns``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             join order in dc.Main.Orders on ((cust.CustomerId, cust.CustomerId) = (order.CustomerId, order.CustomerId))
             select (cust.CustomerId, order.OrderDate)
         } |> Seq.toArray
-    
+
     CollectionAssert.IsNotEmpty qry
     CollectionAssert.AreEquivalent(
         [|
@@ -1355,15 +1355,15 @@ let ``simple select query with join multi columns``() =
 
 
 [<Test >]
-let ``simple select query with join using relationships``() = 
+let ``simple select query with join using relationships``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             for order in cust.``main.Orders by CustomerID`` do
             select (cust.CustomerId, order.OrderDate)
         } |> Seq.toArray
-    
+
     CollectionAssert.IsNotEmpty qry
     CollectionAssert.AreEquivalent(
         [|
@@ -1374,9 +1374,9 @@ let ``simple select query with join using relationships``() =
         |], qry.[0..3])
 
 [<Test; Ignore("Not Supported")>]
-let ``simple select query with group join``() = 
+let ``simple select query with group join``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             groupJoin ord in dc.Main.Orders on (cust.CustomerId = ord.CustomerId) into g
@@ -1384,7 +1384,7 @@ let ``simple select query with group join``() =
             join orderDetail in dc.Main.OrderDetails on (order.OrderId = orderDetail.OrderId)
             select (cust.CustomerId, orderDetail.ProductId, orderDetail.Quantity)
         } |> Seq.toArray
-    
+
     CollectionAssert.IsNotEmpty qry
     CollectionAssert.AreEquivalent(
         [|
@@ -1399,16 +1399,16 @@ let ``simple select query with group join``() =
         |], qry.[0..7])
 
 [<Test >]
-let ``simple select query with multiple joins on relationships``() = 
+let ``simple select query with multiple joins on relationships``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             for order in cust.``main.Orders by CustomerID`` do
             for orderDetail in order.``main.OrderDetails by OrderID`` do
             select (cust.CustomerId, orderDetail.ProductId, orderDetail.Quantity)
         } |> Seq.toArray
-    
+
     CollectionAssert.IsNotEmpty qry
     CollectionAssert.AreEquivalent(
         [|
@@ -1423,16 +1423,16 @@ let ``simple select query with multiple joins on relationships``() =
         |], qry.[0..7])
 
 [<Test; Ignore("Not Supported")>]
-let ``simple select query with left outer join``() = 
+let ``simple select query with left outer join``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             leftOuterJoin order in dc.Main.Orders on (cust.CustomerId = order.CustomerId) into result
             for order in result.DefaultIfEmpty() do
             select (cust.CustomerId, order.OrderDate)
         } |> Seq.toArray
-    
+
     CollectionAssert.IsNotEmpty qry
     CollectionAssert.AreEquivalent(
         [|
@@ -1443,9 +1443,9 @@ let ``simple select query with left outer join``() =
         |], qry.[0..3])
 
 [<Test>]
-let ``simple sumBy``() = 
+let ``simple sumBy``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for od in dc.Main.OrderDetails do
             sumBy od.UnitPrice
@@ -1453,9 +1453,9 @@ let ``simple sumBy``() =
     Assert.That(qry, Is.EqualTo(56500.91M).Within(0.001M))
 
 [<Test>]
-let ``simple async sum``() = 
+let ``simple async sum``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for od in dc.Main.OrderDetails do
             select od.UnitPrice
@@ -1463,9 +1463,9 @@ let ``simple async sum``() =
     Assert.That(qry, Is.EqualTo(56500.91M).Within(0.001M))
 
 [<Test>]
-let ``simple async sum with operations``() = 
+let ``simple async sum with operations``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for od in dc.Main.OrderDetails do
             select ((od.UnitPrice+1m)*od.UnitPrice)
@@ -1473,9 +1473,9 @@ let ``simple async sum with operations``() =
     Assert.That(qry, Is.EqualTo(3454230.7769M).Within(0.1M))
 
 [<Test>]
-let ``simple async sum with join and operations``() = 
+let ``simple async sum with join and operations``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for od in dc.Main.OrderDetails do
             join o in dc.Main.Orders on (od.OrderId = o.OrderId)
@@ -1484,7 +1484,7 @@ let ``simple async sum with join and operations``() =
 
     Assert.That(qry, Is.EqualTo(3454230.7769M).Within(0.1M))
 
-    let qry2 = 
+    let qry2 =
         query {
             for o in dc.Main.Orders do
             join od in dc.Main.OrderDetails on (o.OrderId = od.OrderId)
@@ -1495,9 +1495,9 @@ let ``simple async sum with join and operations``() =
 
 
 [<Test>]
-let ``simple async sum with operations 2``() = 
+let ``simple async sum with operations 2``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for emp in dc.Main.Employees do
             select (decimal(emp.HireDate.Year)*2m*Math.Min(
@@ -1510,9 +1510,9 @@ let ``simple async sum with operations 2``() =
     Assert.That(qry, Is.EqualTo(31886.0M).Within(1.0M))
 
 [<Test>]
-let ``simple averageBy``() = 
+let ``simple averageBy``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for od in dc.Main.OrderDetails do
             averageBy od.UnitPrice
@@ -1520,9 +1520,9 @@ let ``simple averageBy``() =
     Assert.That(qry, Is.EqualTo(26.2185m).Within(0.001M))
 
 [<Test>]
-let ``simple averageByNullable``() = 
+let ``simple averageByNullable``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for od in dc.Main.OrderDetails do
             averageByNullable (System.Nullable(od.UnitPrice))
@@ -1532,75 +1532,75 @@ let ``simple averageByNullable``() =
 [<Test >]
 let ``simple select with distinct``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             select cust.City
             distinct
         } |> Seq.toArray
 
-    CollectionAssert.IsNotEmpty qry   
-    Assert.AreEqual(69, qry.Length) 
+    CollectionAssert.IsNotEmpty qry
+    Assert.AreEqual(69, qry.Length)
     CollectionAssert.AreEquivalent([|"Aachen"; "Albuquerque"; "Anchorage"|], qry.[0..2])
 
 [<Test>]
 let ``simple select with skip``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             select cust.City
             skip 5
-        } 
+        }
         |> Seq.toArray
 
-    CollectionAssert.IsNotEmpty qry   
-    Assert.AreEqual(86, qry.Length) 
+    CollectionAssert.IsNotEmpty qry
+    Assert.AreEqual(86, qry.Length)
     CollectionAssert.AreEquivalent([|"Bergamo"; "Berlin"; "Bern"|], qry.[0..2])
 
 [<Test >]
 let ``simple select with take``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             select cust.City
             take 5
-        } 
+        }
         |> Seq.toArray
 
-    CollectionAssert.IsNotEmpty qry   
-    Assert.AreEqual(5, qry.Length) 
-    CollectionAssert.AreEquivalent([|"Aachen"; "Albuquerque"; "Anchorage"; "Barcelona"; "Barquisimeto"|], qry)  
+    CollectionAssert.IsNotEmpty qry
+    Assert.AreEqual(5, qry.Length)
+    CollectionAssert.AreEquivalent([|"Aachen"; "Albuquerque"; "Anchorage"; "Barcelona"; "Barquisimeto"|], qry)
 
 [<Test>]
-let ``simple select query with all``() = 
+let ``simple select query with all``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for ord in dc.Main.OrderDetails do
             all (ord.UnitPrice > 0m)
-        }   
+        }
     Assert.IsTrue(qry)
 
 [<Test>]
-let ``simple select query with all false``() = 
+let ``simple select query with all false``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for ord in dc.Main.OrderDetails do
             all (ord.UnitPrice > 10m)
-        }   
+        }
     Assert.IsFalse(qry)
 
 [<Test>]
-let ``simple select query with find``() = 
+let ``simple select query with find``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for ord in dc.Main.OrderDetails do
             find (ord.UnitPrice > 10m)
-        }   
+        }
     Assert.AreEqual(14m, qry.UnitPrice)
 
 type Simple = {First : string}
@@ -1610,7 +1610,7 @@ type Dummy<'t> = D of 't
 [<Test >]
 let ``simple select into a generic type`` () =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for emp in dc.Main.Customers do
             select (D {First=emp.ContactName})
@@ -1620,12 +1620,12 @@ let ``simple select into a generic type`` () =
 
 [<Test >]
 let ``simple select into a generic type with pipe`` () =
-    if isMono then 
+    if isMono then
         Console.WriteLine "This is not supported in Mono: simple select into a generic type with pipe"
         Assert.IsFalse false
     else
         let dc = sql.GetDataContext()
-        let qry = 
+        let qry =
             query {
                 for emp in dc.Main.Customers do
                 select ({First=emp.ContactName} |> D)
@@ -1634,7 +1634,7 @@ let ``simple select into a generic type with pipe`` () =
         CollectionAssert.IsNotEmpty qry
 
 [<Test >]
-let ``simple select with bool outside query``() = 
+let ``simple select with bool outside query``() =
     let dc = sql.GetDataContext()
     let rnd = System.Random()
     // Direct booleans outside LINQ:
@@ -1643,7 +1643,7 @@ let ``simple select with bool outside query``() =
     let myCond3 = rnd.NextDouble() > 0.5
     let myCond4 = 4
 
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             // Simple booleans outside queries are supported:
@@ -1651,12 +1651,12 @@ let ``simple select with bool outside query``() =
             // Boolean in select fetches just either country or address, not both:
             select (if not(myCond3) then cust.Country else cust.Address)
         } |> Seq.toArray
-    
+
     CollectionAssert.IsNotEmpty qry
 
 
 [<Test >]
-let ``simple select with bool outside query2``() = 
+let ``simple select with bool outside query2``() =
     let dc = sql.GetDataContext()
     let rnd = System.Random()
     // Direct booleans outside LINQ:
@@ -1665,7 +1665,7 @@ let ``simple select with bool outside query2``() =
     let myCond3 = rnd.NextDouble() > 0.5
     let myCond4 = 4
 
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             // Simple booleans outside queries are supported:
@@ -1673,15 +1673,15 @@ let ``simple select with bool outside query2``() =
             // Boolean in select fetches just either country or address, not both:
             select (if not(myCond4=8) then cust.Country else cust.Address)
         } |> Seq.toArray
-    
+
     CollectionAssert.IsNotEmpty qry
 
 [<Test >]
-let ``simple select cross-join test``() = 
+let ``simple select cross-join test``() =
     //crossjoin: SELECT ... FROM Customers, Employees
     let dc = sql.GetDataContext()
-    let qry = 
-        query { 
+    let qry =
+        query {
             for cust in dc.Main.Customers do
             for emp in dc.Main.Employees do
             select (cust.ContactName, emp.LastName)
@@ -1692,10 +1692,10 @@ let ``simple select cross-join test``() =
 
 
 [<Test >]
-let ``simple select cross-join test 3 tables``() = 
+let ``simple select cross-join test 3 tables``() =
     let dc = sql.GetDataContext()
-    let qry = 
-        query { 
+    let qry =
+        query {
             for cust in dc.Main.Customers do
             for emp in dc.Main.Employees do
             for ter in dc.Main.Territories do
@@ -1703,27 +1703,27 @@ let ``simple select cross-join test 3 tables``() =
             select (cust.ContactName, emp.LastName, ter.RegionId)
             take 3
         } |> Seq.toList
-    Assert.IsNotNull(qry) 
+    Assert.IsNotNull(qry)
     CollectionAssert.Contains(qry, ("Karl Jablonski", "Davolio", 4L))
 
 [<Test >]
-let ``simple select join and cross-join test``() = 
+let ``simple select join and cross-join test``() =
     let dc = sql.GetDataContext()
-    let qry = 
-        query { 
+    let qry =
+        query {
             for cust in dc.Main.Customers do
             for x in cust.``main.Orders by CustomerID`` do
             for emp in dc.Main.Employees do
             select (x.Freight, cust.ContactName, emp.LastName)
             head
-        } 
-    Assert.IsNotNull(qry) 
+        }
+    Assert.IsNotNull(qry)
 
 
 [<Test >]
-let ``simple select nested query``() = 
+let ``simple select nested query``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for c3 in (query {
                 for b2 in (query {
@@ -1737,13 +1737,13 @@ let ``simple select nested query``() =
             }) do
             select c3
         } |> Seq.toList
-    Assert.IsNotNull(qry)    
+    Assert.IsNotNull(qry)
     CollectionAssert.Contains(qry, "Fuller")
 
 [<Test >]
-let ``simple select nested emp query``() = 
+let ``simple select nested emp query``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             for a1 in (query {
@@ -1753,32 +1753,32 @@ let ``simple select nested emp query``() =
             where(a1.FirstName = cust.ContactName || a1.City = cust.City)
             select (a1.FirstName)
         } |> Seq.toList
-    Assert.IsNotNull(qry)    
+    Assert.IsNotNull(qry)
     CollectionAssert.Contains(qry, "Anne")
 
 [<Test >]
-let ``simple select entityValue form another query``() = 
+let ``simple select entityValue form another query``() =
     let dc = sql.GetDataContext()
-    let ent1 = 
+    let ent1 =
         query {
             for cust in dc.Main.Customers do
             select (cust)
         } |> Seq.head
 
-    let ent2 = 
+    let ent2 =
         query {
             for c in dc.Main.Customers do
             where (c.CustomerId = ent1.CustomerId)
             select (c)
         } |> Seq.head
 
-    Assert.IsNotNull(ent2)    
-    Assert.AreEqual(ent1.CustomerId, ent2.CustomerId)    
+    Assert.IsNotNull(ent2)
+    Assert.AreEqual(ent1.CustomerId, ent2.CustomerId)
 
 [<Test; Ignore("Not supported, issue #405")>]
-let ``simple select nested query sort``() = 
+let ``simple select nested query sort``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for emp2 in (query {
                 for ter in dc.Main.EmployeesTerritories do
@@ -1788,13 +1788,13 @@ let ``simple select nested query sort``() =
             sortBy emp2.EmployeeId
             select emp2.Address
         } |> Seq.toList
-    Assert.IsNotNull(qry)    
+    Assert.IsNotNull(qry)
 
 
 [<Test>]
-let ``simple select join twice to same table``() = 
+let ``simple select join twice to same table``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for emp in dc.Main.Employees do
             join cust1 in dc.Main.Customers on (emp.Country = cust1.Country)
@@ -1802,37 +1802,37 @@ let ``simple select join twice to same table``() =
             where (cust1.City = "Butte" && cust2.City = "Kirkland")
             select (emp.EmployeeId, cust1.City, cust2.City)
         } |> Seq.toList
-    Assert.AreEqual(5,qry.Length)    
+    Assert.AreEqual(5,qry.Length)
     let _,c1,c2 = qry.[0]
-    Assert.AreEqual("Butte",c1)    
-    Assert.AreEqual("Kirkland",c2)    
+    Assert.AreEqual("Butte",c1)
+    Assert.AreEqual("Kirkland",c2)
 
 [<Test >]
-let ``simple select query async``() = 
-    let dc = sql.GetDataContext() 
-    let task = 
+let ``simple select query async``() =
+    let dc = sql.GetDataContext()
+    let task =
         async {
             let! asyncquery =
                 query {
                     for cust in dc.Main.Customers do
                     select cust
-                } |> Seq.executeQueryAsync 
+                } |> Seq.executeQueryAsync
             return asyncquery |> Seq.toList
         } |> Async.StartAsTask
     task.Wait()
     CollectionAssert.IsNotEmpty task.Result
 
 [<Test >]
-let ``simple select query async2``() = 
-    let dc = sql.GetDataContext() 
-    let res = 
+let ``simple select query async2``() =
+    let dc = sql.GetDataContext()
+    let res =
         async {
             let! asyncquery =
                 query {
                     for cust in dc.Main.Customers do
                     where (cust.City <> "")
                     select (cust.Address, cust.City, cust.ContactName)
-                } |> Seq.executeQueryAsync 
+                } |> Seq.executeQueryAsync
             return asyncquery
         } |> Async.RunSynchronously
     CollectionAssert.IsNotEmpty res
@@ -1844,14 +1844,14 @@ type sqlOption = SqlDataProvider<Common.DatabaseProviderTypes.SQLITE, connection
 [<Test>]
 let ``simple select with contains query with where boolean option type``() =
     let dc = sqlOption.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where (cust.City.IsSome)
             select cust.CustomerId
             contains "ALFKI"
         }
-    Assert.IsTrue(qry)    
+    Assert.IsTrue(qry)
 
 type MyOpt = {MyItem: string option}
 
@@ -1860,20 +1860,20 @@ let ``simple select with custom option types in where``() =
     let dc = sqlOption.GetDataContext()
     let someItem = {MyItem = Some "London"}
     let noneItem = {MyItem = None}
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where (cust.City = someItem.MyItem && not(cust.City = noneItem.MyItem))
             select cust.CustomerId
             headOrDefault
         }
-    Assert.AreEqual("AROUT",qry)    
+    Assert.AreEqual("AROUT",qry)
 
 
 [<Test>]
-let ``simple async sum with option operations``() = 
+let ``simple async sum with option operations``() =
     let dc = sqlOption.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for od in dc.Main.OrderDetails do
             where (od.UnitPrice>0m)
@@ -1882,22 +1882,22 @@ let ``simple async sum with option operations``() =
     Assert.That(qry, Is.EqualTo(603221955M).Within(10M))
 
 [<Test >]
-let ``simple select query with left join``() = 
+let ``simple select query with left join``() =
     let dc = sqlOption.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             join order in (!!) dc.Main.Orders on (cust.CustomerId = order.OrderId.ToString())
             select (cust.CustomerId, order.OrderDate)
         } |> Seq.toArray
-    
+
     CollectionAssert.IsNotEmpty qry
     Assert.AreEqual(91, qry.Length)
 
 [<Test>]
 let ``simple math operations query``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for p in dc.Main.Products do
             where (p.ProductId - 21L = 23L)
@@ -1908,7 +1908,7 @@ let ``simple math operations query``() =
 
 let ``simple math operations query2``() =
     let dc = sql.GetDataContext()
-    let qry2 = 
+    let qry2 =
         query {
             for p in dc.Main.Products do
             where (p.UnitPrice <> 30m && ((p.UnitPrice - 30m) = (30m - p.UnitPrice)))
@@ -1919,7 +1919,7 @@ let ``simple math operations query2``() =
 [<Test >]
 let ``simple canonical operation substing query``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             // Database spesific warning here: Substring of SQLite starts from 1.
@@ -1934,7 +1934,7 @@ let ``simple canonical operation substing query``() =
 [<Test >]
 let ``simple canonical operation inverted operations query``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for o in dc.Main.Orders do
             where (500m < o.Freight)
@@ -1949,7 +1949,7 @@ let ``simple canonical operation inverted operations query``() =
 let ``simple canonical operations query``() =
     let dc = sql.GetDataContext()
 
-    let qry = 
+    let qry =
         let L = "L"
         query {
             // Silly query not hitting indexes, so testing purposes only...
@@ -1958,9 +1958,9 @@ let ``simple canonical operations query``() =
             join secondCust in dc.Main.Customers on (cust.City + emp.City + "A" = secondCust.City + secondCust.City + "A")
             where (
                 cust.City + emp.City + cust.City + emp.City + cust.City = cust.City + emp.City + cust.City + emp.City + cust.City
-                && abs(emp.EmployeeId)+1L > 4L 
+                && abs(emp.EmployeeId)+1L > 4L
                 && cust.City.Length + secondCust.City.Length + emp.City.Length = 3 * cust.City.Length
-                && (cust.City.Replace("on","xx") + L).Replace("xx","on") + ("O" + L) = "London" + "LOL" 
+                && (cust.City.Replace("on","xx") + L).Replace("xx","on") + ("O" + L) = "London" + "LOL"
                 && cust.City.IndexOf("n")>0 && cust.City.IndexOf(cust.City.Substring(1,cust.City.Length-1))>0
                 && Math.Max(emp.BirthDate.Date.AddYears(3).Month + 1, 0) > 3
                 && emp.BirthDate.AddDays(1.).Subtract(emp.BirthDate).Days=1
@@ -1978,12 +1978,12 @@ let ``simple canonical operations query``() =
 let ``simple canonical operations case-when-elses``() =
     let dc = sql.GetDataContext()
 
-    let qry1 = 
+    let qry1 =
         query {
             for cust in dc.Main.Customers do
             join emp in dc.Main.Employees on (cust.City.Trim() + "_" + cust.Country = emp.City.Trim() + "_" + emp.Country)
-            where ((if box(emp.BirthDate)=null then 200 else 100) = 100) 
-            where ((if emp.EmployeeId > 1L then 200 else 100) = 100) 
+            where ((if box(emp.BirthDate)=null then 200 else 100) = 100)
+            where ((if emp.EmployeeId > 1L then 200 else 100) = 100)
             where ((if emp.BirthDate > emp.BirthDate then 200 else 100) = 100)
             select (cust.CustomerId, cust.City, emp.BirthDate)
             distinct
@@ -1991,10 +1991,10 @@ let ``simple canonical operations case-when-elses``() =
 
     CollectionAssert.IsNotEmpty qry1
 
-    let qry2 = 
+    let qry2 =
         query {
             for cust in dc.Main.Customers do
-            where ((if cust.City=cust.ContactName then cust.City else cust.Address)<>"x") 
+            where ((if cust.City=cust.ContactName then cust.City else cust.Address)<>"x")
             where ( (if cust.City.Substring(0,3)<>"Lond" then cust.City else cust.Address) = "London")
             select (cust.City)
         } |> Seq.toArray
@@ -2007,7 +2007,7 @@ let ``simple operations in select query``() =
     let dc = sql.GetDataContext()
     //let dc = sql.GetDataContext(SelectOperations.DatabaseSide) // same results, maybe different order
 
-    let qry = 
+    let qry =
         let L = "L"
         query {
             for cust in dc.Main.Customers do
@@ -2015,9 +2015,9 @@ let ``simple operations in select query``() =
             join secondCust in dc.Main.Customers on (cust.City = secondCust.City)
             select (
                 cust.City + emp.City + cust.City + emp.City + cust.City = cust.City + emp.City + cust.City + emp.City + cust.City
-                && abs(emp.EmployeeId)+1L > 4L 
+                && abs(emp.EmployeeId)+1L > 4L
                 && cust.City.Length + secondCust.City.Length + emp.City.Length = 3 * cust.City.Length
-                && (cust.City.Replace("on","xx") + L).Replace("xx","on") + ("O" + L) = "London" + "LOL" 
+                && (cust.City.Replace("on","xx") + L).Replace("xx","on") + ("O" + L) = "London" + "LOL"
                 && cust.City.IndexOf("n")>0 && cust.City.IndexOf(cust.City.Substring(1,cust.City.Length-1))>0
                 && Math.Max(emp.BirthDate.Date.AddYears(3).Month + 1, 0) > 3
             )
@@ -2031,7 +2031,7 @@ let ``simple operations in select query``() =
 let ``simple canonical operations in nested select query``() =
     let dc = sql.GetDataContext()
 
-    let qry1 = 
+    let qry1 =
         let L = "L"
         query {
             for cust in dc.Main.Customers do
@@ -2039,8 +2039,8 @@ let ``simple canonical operations in nested select query``() =
             join secondCust in dc.Main.Customers on (cust.City = secondCust.City)
             select (cust.City.Replace("on","xx") + secondCust.City.Length.ToString())
             distinct
-        } 
-    let qry2 = 
+        }
+    let qry2 =
         query {
             for cust in dc.Main.Customers do
             where (qry1.Contains(cust.City.Replace("on","xx") + "6"))
@@ -2054,7 +2054,7 @@ let ``simple canonical operations in nested select query``() =
 let ``simple canonical join query``() =
     let dc = sql.GetDataContext()
 
-    let qry1 = 
+    let qry1 =
         query {
             for cust in dc.Main.Customers do
             join emp in dc.Main.Employees on (cust.City = if emp.City = "" then "" else emp.City)
@@ -2066,7 +2066,7 @@ let ``simple canonical join query``() =
     CollectionAssert.Contains(qry1, "Simon Crowther")
     Assert.LessOrEqual(qry1.[0], qry1.[10])
 
-    let qry2 = 
+    let qry2 =
         query {
             for emp in dc.Main.Employees do
             join cust in dc.Main.Customers on ((if emp.City = "" then "" else emp.City) = cust.City)
@@ -2078,9 +2078,9 @@ let ``simple canonical join query``() =
     CollectionAssert.AreEqual(qry1, qry2)
 
 [<Test>]
-let ``simple query yield test``() = 
+let ``simple query yield test``() =
     let dc = sql.GetDataContext()
-    let query1 = 
+    let query1 =
         query {
             for cus in dc.Main.Customers do
             where (cus.City = "London")
@@ -2092,20 +2092,20 @@ let ``simple query yield test``() =
     CollectionAssert.Contains(query1, "London1")
 
 [<Test>]
-let ``simple union query test``() = 
+let ``simple union query test``() =
     let dc = sql.GetDataContext()
-    let query1 = 
+    let query1 =
         query {
             for cus in dc.Main.Customers do
             where (cus.City <> "Atlantis1")
             select (cus.City)
         }
-    let query2 = 
+    let query2 =
         query {
             for emp in dc.Main.Employees do
             where (emp.City <> "Atlantis2")
             select (emp.City)
-        } 
+        }
 
     // Union: query1 contains 69 distinct values, query2 distinct 5 and res1 is 71 distinct values
     let res1 = query1.Union(query2) |> Seq.toArray
@@ -2119,50 +2119,50 @@ let ``simple union query test``() =
     let res3 = query2.Except(query1) |> Seq.toArray
     Assert.IsNotEmpty(res3)
     CollectionAssert.Contains(res3, "Redmond")
-    
+
 
 [<Test>]
-let ``simple union all query test``() = 
+let ``simple union all query test``() =
     let dc = sql.GetDataContext()
-    let query1 = 
+    let query1 =
         query {
             for cus in dc.Main.Customers do
             select (cus.City)
         }
-    let query2 = 
+    let query2 =
         query {
             for emp in dc.Main.Employees do
             select (emp.City)
-        } 
+        }
 
     // Union all:
     // query1 contains 91 values and query2 contains 8 so res2 contains 99 values.
     let res2 = query1.Concat(query2) |> Seq.toArray
     Assert.IsNotEmpty(res2)
     CollectionAssert.Contains(res2, "Sevilla")
-    
+
 [<Test>]
-let ``verify groupBy results``() = 
+let ``verify groupBy results``() =
     let dc = sql.GetDataContext()
     let enumtest =
         query {
             for cust in dc.Main.Customers do
             select (cust)
         } |> Seq.toList
-    let inlogics = 
+    let inlogics =
         query {
             for cust in enumtest do
             groupBy cust.City into c
             select (c.Key, c.Count())
         } |> Seq.toArray |> Array.sortBy (fun (k,v) -> k )
 
-    let groupqry = 
+    let groupqry =
         query {
             for cust in dc.Main.Customers do
             groupBy cust.City into c
             select (c.Key, c.Count())
         } |> Seq.toArray |> Array.sortBy (fun (k,v) -> k )
-    let res = groupqry |> dict  
+    let res = groupqry |> dict
 
     CollectionAssert.AreEqual(inlogics,groupqry)
 
@@ -2172,26 +2172,26 @@ let ``simple delete where query``() =
     query {
         for cust in dc.Main.Customers do
         where (cust.City = "Atlantis" || cust.CompanyName = "Home")
-    } |> Seq.``delete all items from single table`` 
+    } |> Seq.``delete all items from single table``
     |> Async.RunSynchronously |> ignore
     ()
 
 [<Test>]
-let ``simple left join``() = 
+let ``simple left join``() =
     let dc = sqlOption.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for o in dc.Main.Orders do
             for c in (!!) o.``main.Customers by CustomerID`` do
             select (o.CustomerId, c.CustomerId)
         } |> Seq.toArray
-    
+
     let hasNulls = qry |> Seq.map(fst) |> Seq.filter(Option.isNone) |> Seq.isEmpty |> not
     Assert.IsTrue hasNulls
 
 
 [<Test>]
-let ``simple query sproc result``() = 
+let ``simple query sproc result``() =
     let dc = sql.GetDataContext()
     let pragmaSchemav = dc.Pragma.Get.Invoke("schema_version")
     let res = pragmaSchemav.ResultSet |> Array.map(fun i -> i.ColumnValues |> Map.ofSeq)
@@ -2202,7 +2202,7 @@ let ``simple query sproc result``() =
     let res = pragmaFk.ResultSet |> Array.map(fun i -> i.ColumnValues |> Map.ofSeq)
     Assert.IsNotNull(res)
 
-    let pragmaSchemaAsync = 
+    let pragmaSchemaAsync =
         dc.Pragma.Get.InvokeAsync("schema_version")
         |> Async.RunSynchronously
     Assert.IsNotNull(pragmaSchemaAsync.ResultSet)
@@ -2210,7 +2210,7 @@ let ``simple query sproc result``() =
 [<Test>]
 let ``simple select with subquery exists subquery``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where(query {
@@ -2226,7 +2226,7 @@ let ``simple select with subquery exists subquery``() =
 [<Test>]
 let ``simple select with subquery exists parameter from main query``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for o in dc.Main.Orders do
             where(query {
@@ -2243,7 +2243,7 @@ let ``simple select with subquery exists parameter from main query``() =
 [<Test>]
 let ``simple select with subquery not exists parameter from main query``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for o in dc.Main.Orders do
             where(not(query {
@@ -2260,7 +2260,7 @@ let ``simple select with subquery not exists parameter from main query``() =
 [<Test; Ignore("Not supported")>]
 let ``simple select with subquery in parameter from main query``() =
     let dc = sql.GetDataContext()
-    let qry = 
+    let qry =
         query {
             for o in dc.Main.Orders do
             where( o.OrderId |=| query {
@@ -2276,7 +2276,7 @@ let ``simple select with subquery in parameter from main query``() =
 
 
 [<Test; Ignore("Not supported nested Group-bys")>]
-let ``simple select query with groupBy over groupBy``() = 
+let ``simple select query with groupBy over groupBy``() =
     let dc = sql.GetDataContext()
 
     let qry =
@@ -2287,14 +2287,14 @@ let ``simple select query with groupBy over groupBy``() =
             groupBy o.ShipName into c2
             select (c2.Key, c2.Count())
         }
-    let res = qry |> dict  
+    let res = qry |> dict
     Assert.IsNotEmpty(res)
     Assert.AreEqual(6, res.["London"])
 
 [<Test; Ignore("Not supported. Basically works, but creates 1+N selects, instead of one.")>]
 let ``simple select navigation properties``() =
     let dc = sql.GetDataContext(SelectOperations.DatabaseSide)
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             take 2
@@ -2308,10 +2308,10 @@ let ``simple select navigation properties``() =
     let oid = qry.["ALFKI"] |> Seq.toList
     Assert.Less(10L,oid)
 
-let ``where join order shouldn't matter``() = 
+let ``where join order shouldn't matter``() =
     let dc = sql.GetDataContext()
 
-    let qry1 = 
+    let qry1 =
         query {
             for o in dc.Main.Orders do
             join od in dc.Main.OrderDetails on (o.OrderId=od.OrderId)
@@ -2319,7 +2319,7 @@ let ``where join order shouldn't matter``() =
             select (o.OrderId, od.OrderId)
         } |> Seq.toArray
 
-    let qry2 = 
+    let qry2 =
         query {
             for o in dc.Main.Orders do
             where (o.Freight > 800m)
@@ -2336,13 +2336,13 @@ let ``where join order shouldn't matter``() =
 [<Test;>]
 let ``simple select with subquery of subqueries``() =
     let dc = sql.GetDataContext()
-    let subquery (subQueryIds:IQueryable<string>) = 
+    let subquery (subQueryIds:IQueryable<string>) =
         query {
             for cust in dc.Main.Customers do
             where(subQueryIds.Contains(cust.CustomerId))
             select cust.CustomerId
         }
-    let subquery2 = 
+    let subquery2 =
         query {
             for custc in dc.Main.Customers do
             where(custc.City |=| (query {
@@ -2356,12 +2356,12 @@ let ``simple select with subquery of subqueries``() =
     let initial1 = ["ALFKI"].AsQueryable()
     let initial2 = ["ANATR"].AsQueryable()
     let initial3 = ["AROUT"].AsQueryable()
-    let qry = 
+    let qry =
         query {
             for cust in dc.Main.Customers do
             where(
                 subquery(subquery(subquery(subquery(initial1)))).Contains(cust.CustomerId) ||
-                subquery(subquery(subquery(subquery(initial2)))).Contains(cust.CustomerId) || 
+                subquery(subquery(subquery(subquery(initial2)))).Contains(cust.CustomerId) ||
                 subquery(initial3).Contains(cust.CustomerId) ||
                 subquery2.Contains(cust.CustomerId))
             select cust.CustomerId
@@ -2370,7 +2370,7 @@ let ``simple select with subquery of subqueries``() =
     Assert.IsNotEmpty(eval)
     Assert.AreEqual(4, eval.Length)
     Assert.IsTrue(eval.Contains("ANATR"))
-    
+
 type Employee = {
     EmployeeId : int64
     FirstName : string
@@ -2386,7 +2386,7 @@ let ``simple mapTo test``() =
             select emp
             skip 2
             take 5
-        } 
+        }
         |> Seq.map (fun e -> e.MapTo<Employee>())
         // Optional type-mapping can be done as parameter function, e.g.:
         //|> Seq.map (fun e -> e.MapTo<Employee>(function | "EmployeeId", (:? int64 as id) -> Convert.ToInt32(id) |> box | k,v -> v))

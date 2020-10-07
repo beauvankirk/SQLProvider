@@ -1,7 +1,7 @@
 ﻿(*** hide ***)
 #I @"../../files/sqlite"
 (*** hide ***)
-#I "../../../bin/net451"
+#I "../../../bin/net472"
 (*** hide ***)
 #r "FSharp.Data.SqlProvider.dll"
 open FSharp.Data.Sql
@@ -14,14 +14,14 @@ open FSharp.Data.Sql
 
 These are the "common" parameters used by all SqlProviders.
 
-All static parameters must be known at compile time, for strings this can be 
+All static parameters must be known at compile time, for strings this can be
 achieved by adding the `[<Literal>]` attribute if you are not passing it inline.
 
 ### ConnectionString
 
-This is the connection string commonly used to connect to a database server 
-instance.  See the documentation on your desired database type to find out 
-more. 
+This is the connection string commonly used to connect to a database server
+instance.  See the documentation on your desired database type to find out
+more.
 *)
 
 [<Literal>]
@@ -35,10 +35,10 @@ Instead of storing the connection string in the source code / `fsx` script, you
 can store values in the `App.config` file:
 
 ```xml
-<connectionStrings>  
-  <add name="MyConnectionString"   
-   providerName="System.Data.ProviderName"   
-   connectionString="Valid Connection String;" />  
+<connectionStrings>
+  <add name="MyConnectionString"
+   providerName="System.Data.ProviderName"
+   connectionString="Valid Connection String;" />
 </connectionStrings>
 ```
 
@@ -104,10 +104,10 @@ ctx.``Design Time Commands``.SaveContextSchema
 
 This method doesn't affect runtime execution. Note that since SQLProvider loads schema information lazily,
 calling `SaveContextSchema` only saves the portion of the database schema that is sufficient to compile
-queries referenced in the scope of the current solution or script. Therefore it is recommended to execute 
-it after the successful build of the whole solution. Type the method name with parentheses, if you then 
-type a dot (.), you should see a tooltip with information when the schema was last saved. Once the schema 
-is saved, the outcome of the method execution is stored in memory, so the file will not be overwritten. 
+queries referenced in the scope of the current solution or script. Therefore it is recommended to execute
+it after the successful build of the whole solution. Type the method name with parentheses, if you then
+type a dot (.), you should see a tooltip with information when the schema was last saved. Once the schema
+is saved, the outcome of the method execution is stored in memory, so the file will not be overwritten.
 In case the database schema changes and the schema file must be updated, remove the outdated file, reload
 the solution and retype or uncomment a call to `SaveContextSchema` to regenerate the schema file.
 
@@ -185,5 +185,5 @@ Besides the static parameters the `.GetDataContext(...)` method has optional par
 * transactionOptions - TransactionOptions for the transaction created on SubmitChanges.
 * commandTimeout - SQL command timeout. Maximum time for single SQL-command in seconds.
 * selectOperations - Execute select-clause operations in SQL database rahter than .NET-side.
-			  
+
 *)

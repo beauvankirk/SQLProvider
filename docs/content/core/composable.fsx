@@ -1,5 +1,5 @@
 (*** hide ***)
-#I "../../../bin/net451"
+#I "../../../bin/net472"
 (*** hide ***)
 [<Literal>]
 let connectionString = "Data Source=" + __SOURCE_DIRECTORY__ + @"/../../../tests/SqlProvider.Tests/scripts/northwindEF.db;Version=3"
@@ -28,7 +28,7 @@ By passing functions as parameters you are able to generate higher-order query o
 Therefore composable query means that you can do logics to compose just one database-SQL-query from multiple queryables.
 By using composable queries you can shorten the Database transactions and keep the connection open a minimum of time.
 
-One common anti-pattern is a trial to solve all the problems in the world by a single code. 
+One common anti-pattern is a trial to solve all the problems in the world by a single code.
 So when you use this kind of features to achieve "common logics", keep in mind the software mainainability.
 One solution is to add a database view and query that from SQLProvider.
 
@@ -117,7 +117,7 @@ let companyNameFilter inUse =
         match inUse with
         |true ->
             (fun iq -> iq.Where(fun (c:CustomersEntity) -> c.CompanyName = "The Big Cheese"))
-        |false -> 
+        |false ->
             myFilter2
     queryable
 
@@ -198,7 +198,7 @@ All the entities inherit from SqlEntity which has GetColumn-method.
 So you can use non-strongly-typed columns like this:
 
 *)
-let qry = 
+let qry =
     query {
         for x in query1 do
         where ((x.GetColumn<string> "CustomerId") = "ALFKI")
@@ -224,7 +224,7 @@ let runtimeSelectedFilter = if 1 = 1 then johnFilter else pamFilter
 let employees =
     query {
         for emp in ctx.Main.Employees do
-        where ((%runtimeSelectedFilter) emp) 
+        where ((%runtimeSelectedFilter) emp)
         select emp
     } |> Seq.toArray
 

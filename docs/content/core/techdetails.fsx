@@ -11,7 +11,7 @@ Databases that you should need for development:
  - Demo-data database scripts are at: [/src/DatabaseScripts/](https://github.com/fsprojects/SQLProvider/tree/master/src/DatabaseScripts)
  - Access database is at: [/docs/files/msaccess/Northwind.MDB](https://github.com/fsprojects/SQLProvider/blob/master/docs/files/msaccess/Northwind.MDB)
  - SQLite database is at: [/tests/SqlProvider.Tests/db/northwindEF.db](https://github.com/fsprojects/SQLProvider/blob/master/tests/SqlProvider.Tests/db/northwindEF.db)
- 
+
 Even though our test run will run modifications to the test databases, don't check in these `*.mdb` and `*.db` files with your commit, to avoid bad merge-cases.
 
 ### Solution structure
@@ -19,7 +19,7 @@ Even though our test run will run modifications to the test databases, don't che
 We use Fake and Paket. You have to run `build.cmd` on Windows (or `sh ./build.sh` on Mac/Linux) before opening the solutions.
 
 The main source solution is `SQLProvider.sln`.
-The unit tests are located in another one, `SQLProvider.Tests.sln`, and when you open the solution, it will lock the `bin\net451\FSharp.Data.SqlProvider.dll`, and after that you can't build the main solution.
+The unit tests are located in another one, `SQLProvider.Tests.sln`, and when you open the solution, it will lock the `bin\net472\FSharp.Data.SqlProvider.dll`, and after that you can't build the main solution.
 
  - To debug design-time features you "Attach to process" the main solution debugger to another instance of Visual Studio running the tests solution.
  - To debug runtime you attach it to e.g. fsi.exe and run the code in interactive.
@@ -94,13 +94,13 @@ so it would hit this in [SqlRuntime.Linq.fs](https://github.com/fsprojects/SQLPr
 ```
 
 because the LINQ-expression-tree has `ExpressionType.Call` named "Where" with source of IWithSqlService (which is the SqlQueryable<SqlEntity>).
-What happens then is parsing of the Where-query. Where-queries are nested structures having known conditions (modelled with pattern `Condition`). If the conditions are having `SqlColumnGet`s, a pattern that says that it's `SqlEntity` with method `GetColumn`, we know that it has to be part of SQL-clause. 
+What happens then is parsing of the Where-query. Where-queries are nested structures having known conditions (modelled with pattern `Condition`). If the conditions are having `SqlColumnGet`s, a pattern that says that it's `SqlEntity` with method `GetColumn`, we know that it has to be part of SQL-clause.
 
 We collect all the known patterns to `IWithSqlService`s field SqlExpression, being a type `SqlExp`, our non-complete known recursive model-tree of SQL clauses.
 
 ### Execution of the query
 
-Eventually there also comes the call `executeQuery` (or `executeQueryScalar` for SQL-queries that will return a single value like count), either by enumeration of our IQueryable or at the end of LINQ-expression-tree. That will call `QueryExpressionTransformer.convertExpression`. What happens there (in 
+Eventually there also comes the call `executeQuery` (or `executeQueryScalar` for SQL-queries that will return a single value like count), either by enumeration of our IQueryable or at the end of LINQ-expression-tree. That will call `QueryExpressionTransformer.convertExpression`. What happens there (in
 [SqlRuntime.Linq.fs](https://github.com/fsprojects/SQLProvider/blob/master/src/SQLProvider/SqlRuntime.Linq.fs)):
 
  - We create a projection-lambda. This is described in detail below.
@@ -114,7 +114,7 @@ For security reasons we don't do `SELECT *` but we actually list the columns tha
 The `TupleIndex` of IWithSqlService is a way to collect joined tables to match the sql-aliasses, here the `[cust]`.
 
 ```sql
-SELECT [cust].[Address] as 'Address', 
+SELECT [cust].[Address] as 'Address',
        [cust].[City] as 'City',
        [cust].[CompanyName] as 'CompanyName',
 	   [cust].[ContactName] as 'ContactName',
@@ -124,15 +124,15 @@ SELECT [cust].[Address] as 'Address',
 	   [cust].[Fax] as 'Fax',
 	   [cust].[Phone] as 'Phone',
 	   [cust].[PostalCode] as 'PostalCode',
-	   [cust].[Region] as 'Region' 
-FROM main.Customers as [cust] 
+	   [cust].[Region] as 'Region'
+FROM main.Customers as [cust]
 WHERE (([cust].[CustomerID]= @param1))
 
 -- params @param1 - "ALFKI";
 ```
 
 ### Projection-lambda
- 
+
 Now, if the select-clause would have been complex:
 
 *)

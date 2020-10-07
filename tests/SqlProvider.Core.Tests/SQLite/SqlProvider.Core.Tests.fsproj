@@ -33,13 +33,13 @@
   </ItemGroup>
   <!-- .NET 4.61 is Net Standard 2.0 compatible so use what ever libraries.
       However non-Windows typeprovider will call Mono on compile-time. Mono is not Net Standard 2.0 compatible.
-      So Mono will use Net 4.5.1 libraries. Typeprovider handles that on compilation, and after compile your 
+      So Mono will use Net 4.7.2 libraries. Typeprovider handles that on compilation, and after compile your
       assembly will ve .NET Core compatible. -->
   <ItemGroup><!-- Mono fix -->
     <Reference Condition="'$(IsWindows)' != 'true' Or '$(TargetFramework)' == 'netstandard2.0'" Include="FSharp.Data.SqlProvider">
-      <HintPath>../../../bin/net451/FSharp.Data.SqlProvider.dll</HintPath>
+      <HintPath>../../../bin/net472/FSharp.Data.SqlProvider.dll</HintPath>
     </Reference>
-  </ItemGroup>  
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.0.2" />
     <PackageReference Condition="'$(IsWindows)' == 'true' And '$(TargetFramework)' != 'netstandard2.0'" Include="SQLProvider" Version="1.1.91" />
@@ -67,7 +67,7 @@
     <Exec Condition="'$(IsLinux)' == 'true'" Command="cp ../../../packages/standard/SQLitePCLRaw.lib.e_sqlite3.linux/runtimes/linux-x86/native/libe_sqlite3.so temp/ " />
     <Exec Command="cp ../../../packages/standard/SQLitePCLRaw.bundle_green/lib/netstandard1.1/SQLitePCLRaw.batteries_green.dll temp/ " />
     <Exec Command="cp ../../../packages/scripts/SQLitePCLRaw.core/lib/net45/SQLitePCLRaw.core.dll temp/ " />
-    
+
     <Exec Command="cp ../../../packages/scripts/Microsoft.Data.Sqlite.Core.Backport/lib/net45/Microsoft.Data.Sqlite.dll temp/ " />
   </Target>
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">

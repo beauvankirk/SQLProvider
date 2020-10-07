@@ -2,7 +2,7 @@
 #r @"C:\Program Files\dotnet\sdk\2.0.0\Microsoft\Microsoft.NET.Build.Extensions\net461\lib\netstandard.dll"
 #r "../../../bin/netstandard2.0/FSharp.Data.SqlProvider.dll"
 // On Non-Windows-machine, fsharpi is not running on Core:
-// #r "../../../bin/net451/FSharp.Data.SqlProvider.dll"
+// #r "../../../bin/net472/FSharp.Data.SqlProvider.dll"
 
 [<Literal>]
 let resolutionPath = __SOURCE_DIRECTORY__ + "/temp"
@@ -27,7 +27,7 @@ type HR = SqlDataProvider<
 let main argv =
     let runtimeConnectionString = connStr
     let ctx = HR.GetDataContext runtimeConnectionString
-    let employeesFirstName = 
+    let employeesFirstName =
         query {
             for emp in ctx.Public.Employees do
             select emp.FirstName

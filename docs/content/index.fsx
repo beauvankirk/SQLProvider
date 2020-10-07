@@ -1,5 +1,5 @@
 (*** hide ***)
-#I "../../bin/net451"
+#I "../../bin/net472"
 
 (**
 SQLProvider
@@ -8,7 +8,7 @@ SQLProvider
 A general .NET/Mono SQL database type provider. Current features:
 
 * [LINQ queries](core/querying.html)
-* Lazy schema exploration 
+* Lazy schema exploration
 * Automatic constraint navigation
 * [Individuals](core/individuals.html)
 * Transactional [CRUD](core/crud.html) operations with identity support
@@ -21,9 +21,9 @@ A general .NET/Mono SQL database type provider. Current features:
 * Custom Operators
 * Supports [Asynchronous Operations](core/async.html)
 * Supports [.NET Standard / .NET Core](core/netstandard.html)
-  
+
 The provider currently has explicit implementations for the following database vendors:
- 
+
 * SQL Server
 * SQLite
 * PostgreSQL
@@ -32,7 +32,7 @@ The provider currently has explicit implementations for the following database v
 * MsAccess
 * Firebird
 
-There is also an ODBC provider that will let you connect to any ODBC source with limited features. 
+There is also an ODBC provider that will let you connect to any ODBC source with limited features.
 
 All database vendors except SQL Server and MS Access will require 3rd party ADO.NET connector objects to function. These are dynamically loaded at runtime so that the SQL provider project is not dependent on them. You must supply the location of the assemblies with the "ResolutionPath" static parameter.
 
@@ -67,10 +67,10 @@ This example demonstrates the use of the SQL type provider:
 #r "FSharp.Data.SQLProvider.dll"
 open FSharp.Data.Sql
 
-let [<Literal>] resolutionPath = __SOURCE_DIRECTORY__ + @"..\..\files\sqlite" 
+let [<Literal>] resolutionPath = __SOURCE_DIRECTORY__ + @"..\..\files\sqlite"
 let [<Literal>] connectionString = "Data Source=" + __SOURCE_DIRECTORY__ + @"\northwindEF.db;Version=3"
 // create a type alias with the connection string and database vendor settings
-type sql = SqlDataProvider< 
+type sql = SqlDataProvider<
               ConnectionString = connectionString,
               DatabaseVendor = Common.DatabaseProviderTypes.SQLITE,
               ResolutionPath = resolutionPath,
@@ -81,10 +81,10 @@ let ctx = sql.GetDataContext()
 // To use dynamic runtime connectionString, you could use:
 // let ctx = sql.GetDataContext connectionString2
 
-// pick individual entities from the database 
+// pick individual entities from the database
 let christina = ctx.Main.Customers.Individuals.``As ContactName``.``BERGS, Christina Berglund``
 
-// directly enumerate an entity's relationships, 
+// directly enumerate an entity's relationships,
 // this creates and triggers the relevant query in the background
 let christinasOrders = christina.``main.Orders by CustomerID`` |> Seq.toArray
 
@@ -95,14 +95,14 @@ let mattisOrderDetails =
             // or you can explicitly join on the fields you choose
             join od in ctx.Main.OrderDetails on (o.OrderId = od.OrderId)
             //  the (!!) operator will perform an outer join on a relationship
-            for prod in (!!) od.``main.Products by ProductID`` do 
+            for prod in (!!) od.``main.Products by ProductID`` do
             // nullable columns can be represented as option types; the following generates IS NOT NULL
-            where o.ShipCountry.IsSome                
+            where o.ShipCountry.IsSome
             // standard operators will work as expected; the following shows the like operator and IN operator
             where (c.ContactName =% ("Matti%") && c.CompanyName |=| [|"Squirrelcomapny";"DaveCompant"|] )
             sortBy o.ShipName
             // arbitrarily complex projections are supported
-            select (c.ContactName,o.ShipAddress,o.ShipCountry,prod.ProductName,prod.UnitPrice) } 
+            select (c.ContactName,o.ShipAddress,o.ShipCountry,prod.ProductName,prod.UnitPrice) }
     |> Seq.toArray
 
 (**
@@ -122,22 +122,22 @@ The library comes with comprehensive documentation.
  * [Composable Query](core/composable.html) information on integrating this project with the SQL provider
  * [Mapping to record types](core/mappers.html)
  * [API Reference](reference/index.html) contains automatically generated documentation for all types, modules
-   and functions in the library. 
+   and functions in the library.
 
 Database vendor specific issues and considerations are documented on their separate pages. Please see the menu on the right.
- 
+
 Contributing and copyright
 --------------------------
 
-The project is hosted on [GitHub][gh] where you can [report issues][issues], fork 
-the project and submit [pull requests](core/contributing.html). If you're adding new public API, please also 
+The project is hosted on [GitHub][gh] where you can [report issues][issues], fork
+the project and submit [pull requests](core/contributing.html). If you're adding new public API, please also
 consider adding [samples][content] that can be turned into a documentation. You might
 also want to read [library design notes][readme] to understand how it works.
 Our tests have [more samples][tests]. Learn more tech [tech details](core/techdetails.html).
 
-The library is available under Public Domain license, which allows modification and 
-redistribution for both commercial and non-commercial purposes. For more information see the 
-[License file][license] in the GitHub repository. 
+The library is available under Public Domain license, which allows modification and
+redistribution for both commercial and non-commercial purposes. For more information see the
+[License file][license] in the GitHub repository.
 
   [content]: https://github.com/fsprojects/SQLProvider/tree/master/docs/content/core
   [tests]: https://github.com/fsprojects/SQLProvider/tree/master/tests/SqlProvider.Tests/scripts

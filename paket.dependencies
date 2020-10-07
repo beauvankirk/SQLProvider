@@ -1,10 +1,11 @@
-source https://nuget.org/api/v2
+source https://api.nuget.org/v3/index.json
 
 nuget FSharp.Compiler.Tools
 nuget Nuget.CommandLine
-nuget FAKE
-nuget FSharp.Formatting >= 3.0.0-beta01
-nuget FSharp.Core >= 3.1.2.5 lowest_matching:true, redirects:force
+nuget FAKE = 4.64.18
+nuget FSharp.Formatting
+// git http://github.com/fsprojects/FSharp.Formatting.git master
+nuget FSharp.Core  redirects:force
 nuget RazorEngine
 nuget NUnit = 2.6.4
 nuget NUnit.Runners = 2.6.4
@@ -12,7 +13,7 @@ nuget SourceLink.Fake
 nuget System.Data.SqlClient
 
 group Standard
-    source https://nuget.org/api/v2
+    source https://api.nuget.org/v3/index.json
 
     nuget FSharp.Core
     nuget System.Data.OleDb
@@ -33,14 +34,14 @@ group Standard
 github fsharp/FAKE modules/Octokit/Octokit.fsx
 
 group SourceFiles
-    source https://nuget.org/api/v2
+    source https://api.nuget.org/v3/index.json
 
     github fsprojects/FSharp.TypeProviders.SDK src/ProvidedTypes.fsi
     github fsprojects/FSharp.TypeProviders.SDK src/ProvidedTypes.fs
     github Thorium/Linq.Expression.Optimizer src/Code/ExpressionOptimizer.fs
 
 group Scripts
-    source https://nuget.org/api/v2
+    source https://api.nuget.org/v3/index.json
 
     nuget MySql.Data < 7.0.0
     nuget MySqlConnector
@@ -53,4 +54,3 @@ group Scripts
     // nuget Microsoft.Data.Sqlite.Core.Backport // Needed if we want currently Core support on Linux.
 
 
-    

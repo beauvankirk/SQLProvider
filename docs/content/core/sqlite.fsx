@@ -1,5 +1,5 @@
 ﻿(*** hide ***)
-#I @"../../../bin/net451"
+#I @"../../../bin/net472"
 #r "FSharp.Data.SqlProvider.dll"
 open System
 open FSharp.Data.Sql
@@ -16,17 +16,17 @@ Basic connection string used to connect to the SQLite database.
 *)
 
 [<Literal>]
-let connectionString = 
-    "Data Source=" + 
-    __SOURCE_DIRECTORY__ + @"/../../../tests/SqlProvider.Tests/scripts/northwindEF.db;" + 
+let connectionString =
+    "Data Source=" +
+    __SOURCE_DIRECTORY__ + @"/../../../tests/SqlProvider.Tests/scripts/northwindEF.db;" +
     "Version=3;foreign keys=true"
 
 (**
 ### ResolutionPath
 
-Path to search for database vendor speficic assemblies. Specify the path where `System.Data.SQLite.dll` is stored. 
-If you use the System.Data.SQLite NuGet package and target .NET 4.6, the path would be something like 
-`__SOURCE_DIRECTORY__ + @"\..\packages\System.Data.SQLite.Core.<version>\lib\net46"`. 
+Path to search for database vendor speficic assemblies. Specify the path where `System.Data.SQLite.dll` is stored.
+If you use the System.Data.SQLite NuGet package and target .NET 4.6, the path would be something like
+`__SOURCE_DIRECTORY__ + @"\..\packages\System.Data.SQLite.Core.<version>\lib\net46"`.
 Both absolute and relative paths are supported.
 
 Note that `System.Data.SQLite.dll` will look for the native interop library:
@@ -34,10 +34,10 @@ Note that `System.Data.SQLite.dll` will look for the native interop library:
 - on Windows: `SQLite.Interop.dll` in the `x64` and `x86` subdirectories of the resolution path.
 - on Linux: `libSQLite.Interop.so` in the resolution path directory.
 
-The interop libraries are not properly placed afer the System.Data.SQLite NuGet package is added, so you might have to 
+The interop libraries are not properly placed afer the System.Data.SQLite NuGet package is added, so you might have to
 manually copy the interop libraries:
 
-- on Windows: copy `x64` and `x86` subdirectories from SQLite build directory, which typically is 
+- on Windows: copy `x64` and `x86` subdirectories from SQLite build directory, which typically is
  `<project root>\packages\System.Data.SQLite.Core.<version>\build\net46`.
 - on Linux: first build the `libSQLite.Interop.so` using `<srcDir>/Setup/compile-interop-assembly-release.sh` script from [System.Data.SQLite source distribution](https://system.data.sqlite.org/index.html/doc/trunk/www/downloads.wiki) `sqlite-netFx-source-1.x.xxx.x.zip`. And then copy it from `<srcDir>/bin/2013/Release/bin/`.
 
@@ -67,15 +67,15 @@ namespace, which has the following members:
 
 *)
 type sql = SqlDataProvider<
-                Common.DatabaseProviderTypes.SQLITE, 
+                Common.DatabaseProviderTypes.SQLITE,
                 SQLiteLibrary = Common.SQLiteLibrary.SystemDataSQLite,
-                ConnectionString = connectionString, 
-                ResolutionPath = resolutionPath, 
+                ConnectionString = connectionString,
+                ResolutionPath = resolutionPath,
                 CaseSensitivityChange = Common.CaseSensitivityChange.ORIGINAL>
 
 let ctx = sql.GetDataContext()
 
-let customers = 
+let customers =
     ctx.Main.Customers
     |> Seq.map(fun c -> c.ContactName)
     |> Seq.toList

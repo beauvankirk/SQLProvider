@@ -43,11 +43,11 @@ This example is on Windows, but it's just a file-copy really:
 
 ```xml
 <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="xcopy %USERPROFILE%\.nuget\packages\SQLProvider\1.1.38\lib\net451\FSharp.Data.SqlProvider.dll compiletime\ /y" />
+    <Exec Command="xcopy %USERPROFILE%\.nuget\packages\SQLProvider\1.1.38\lib\net472\FSharp.Data.SqlProvider.dll compiletime\ /y" />
 </Target>
 ```
 
-Add a manual reference to SQLProvider net451:
+Add a manual reference to SQLProvider net472:
 
 ```xml
 <ItemGroup>
@@ -61,7 +61,7 @@ And a post-build target to replace the runtime-file back to .NET Standard versio
 
 ```xml
 <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy %USERPROFILE%\.nuget\packages\SQLProvider\1.1.38\lib\net451\FSharp.Data.SqlProvider.dll bin\Debug\netcoreapp2.0\ /y" />
+    <Exec Command="xcopy %USERPROFILE%\.nuget\packages\SQLProvider\1.1.38\lib\net472\FSharp.Data.SqlProvider.dll bin\Debug\netcoreapp2.0\ /y" />
 </Target>
 ```
 

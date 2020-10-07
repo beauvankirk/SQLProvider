@@ -28,11 +28,12 @@ let info =
 open Fake
 open System.IO
 open Fake.FileHelper
-open FSharp.Literate
-open FSharp.MetadataFormat
+open FSharp.Formatting.Literate
+open FSharp.Formatting.Literate.Evaluation
+open FSharp.Formatting.ApiDocs
 
 // Paths with template/source/output locations
-let bin        = __SOURCE_DIRECTORY__ @@ "../../bin/net451"
+let bin        = __SOURCE_DIRECTORY__ @@ "../../bin/net472"
 let content    = __SOURCE_DIRECTORY__ @@ "../content"
 let output     = __SOURCE_DIRECTORY__ @@ "../output"
 let files      = __SOURCE_DIRECTORY__ @@ "../files"
@@ -57,7 +58,7 @@ subDirectories (directoryInfo templates)
 let copyFiles () =
   CopyRecursive files output true |> Log "Copying file: "
   ensureDirectory (output @@ "content")
-  CopyRecursive (formatting @@ "styles") (output @@ "content") true 
+  CopyRecursive (formatting @@ "styles") (output @@ "content") true
     |> Log "Copying styles and scripts: "
 
 // Build API reference from XML comments
@@ -65,13 +66,14 @@ let buildReference () =
   CleanDir (output @@ "reference")
   let binaries =
     referenceBinaries
-    |> List.map (fun lib-> bin @@ lib)
-  MetadataFormat.Generate
+    |> List.map (fun lib-> bin @@ lib |> ApiDocInput.FromFile)
+  ApiDocs.GenerateHtml
     ( binaries, output @@ "reference", layoutRootsAll.["en"],
-      parameters = ("root", "../")::info,
-      sourceRepo = githubLink @@ "tree/master",
-      sourceFolder = __SOURCE_DIRECTORY__ @@ ".." @@ "..",
-      publicOnly = true, libDirs = [bin] )
+      substitutions = ("root", "../")::info,
+      root = githubLink @@ "tree/master",
+    //   sourceFolder = __SOURCE_DIRECTORY__ @@ ".." @@ "..",
+    //   publicOnly = true,
+      libDirs = [bin] )
 
 // Build documentation from `fsx` and `md` files in `docs/content`
 let buildDocumentation () =
@@ -83,8 +85,8 @@ let buildDocumentation () =
     else
       let next = getRelativePath root' initialSubDir (Path.GetDirectoryName subDir')
       if next = "." then ".." else "../" + next
-      
-  let subdirs = Directory.EnumerateDirectories(content, "*", SearchOption.AllDirectories) 
+
+  let subdirs = Directory.EnumerateDirectories(content, "*", SearchOption.AllDirectories)
   for dir in Seq.append [content] subdirs do
     let sub = if dir.Length > content.Length then dir.Substring(content.Length + 1) else "."
     let langSpecificPath(lang, path:string) =

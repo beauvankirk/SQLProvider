@@ -12,7 +12,7 @@
   <PropertyGroup Condition="'$(MSBuildRuntimeType)' == 'Core'">
     <IsOSX Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))' == 'true'">true</IsOSX>
     <IsLinux Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))' == 'true'">true</IsLinux>
-  </PropertyGroup>  
+  </PropertyGroup>
   <PropertyGroup Condition="'$(IsWindows)' == 'true'">
     <!-- Your path of full .NET Framework FSC compiler. -->
     <FscToolPath>C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\CommonExtensions\Microsoft\FSharp</FscToolPath>
@@ -30,17 +30,17 @@
   <!-- /FSharp config -->
   <!-- .NET 4.61 is Net Standard 2.0 compatible so use what ever libraries.
       However non-Windows typeprovider will call Mono on compile-time. Mono is not Net Standard 2.0 compatible.
-      So Mono will use Net 4.5.1 libraries. Typeprovider handles that on compilation, and after compile your 
+      So Mono will use Net 4.7.2 libraries. Typeprovider handles that on compilation, and after compile your
       assembly will ve .NET Core compatible. -->
   <ItemGroup>
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup><!-- Mono fix -->
     <Reference Condition="'$(IsWindows)' != 'true' Or '$(TargetFramework)' == 'netstandard2.0'" Include="FSharp.Data.SqlProvider">
-      <HintPath>../../../bin/net451/FSharp.Data.SqlProvider.dll</HintPath>
-      <!--HintPath>../../packages/SQLProvider/lib/net451/FSharp.Data.SqlProvider.dll</HintPath-->
+      <HintPath>../../../bin/net472/FSharp.Data.SqlProvider.dll</HintPath>
+      <!--HintPath>../../packages/SQLProvider/lib/net472/FSharp.Data.SqlProvider.dll</HintPath-->
     </Reference>
-  </ItemGroup>  
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Condition="'$(IsWindows)' == 'true' And '$(TargetFramework)' != 'netstandard2.0'" Include="SQLProvider" Version="1.1.91" />
     <PackageReference Include="System.Console" Version="4.3.1" />
