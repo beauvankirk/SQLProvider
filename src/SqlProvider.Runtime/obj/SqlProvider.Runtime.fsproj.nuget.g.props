@@ -15,7 +15,7 @@
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' AND '$(ExcludeRestorePackageImports)' != 'true' ">
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <PkgSystem_Security_Principal_Windows Condition=" '$(PkgSystem_Security_Principal_Windows)' == '' ">C:\Users\beauv\.nuget\packages\system.security.principal.windows\4.7.0</PkgSystem_Security_Principal_Windows>
     <PkgSystem_Security_AccessControl Condition=" '$(PkgSystem_Security_AccessControl)' == '' ">C:\Users\beauv\.nuget\packages\system.security.accesscontrol\4.7.0</PkgSystem_Security_AccessControl>
     <PkgSystem_Security_Permissions Condition=" '$(PkgSystem_Security_Permissions)' == '' ">C:\Users\beauv\.nuget\packages\system.security.permissions\4.7.0</PkgSystem_Security_Permissions>

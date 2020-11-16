@@ -15,24 +15,7 @@
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' AND '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgMicrosoft_NETCore_Platforms Condition=" '$(PkgMicrosoft_NETCore_Platforms)' == '' ">C:\Users\beauv\.nuget\packages\microsoft.netcore.platforms\5.0.0</PkgMicrosoft_NETCore_Platforms>
-    <PkgMicrosoft_Win32_SystemEvents Condition=" '$(PkgMicrosoft_Win32_SystemEvents)' == '' ">C:\Users\beauv\.nuget\packages\microsoft.win32.systemevents\5.0.0</PkgMicrosoft_Win32_SystemEvents>
-    <PkgSystem_Drawing_Common Condition=" '$(PkgSystem_Drawing_Common)' == '' ">C:\Users\beauv\.nuget\packages\system.drawing.common\5.0.0</PkgSystem_Drawing_Common>
-    <PkgSystem_Windows_Extensions Condition=" '$(PkgSystem_Windows_Extensions)' == '' ">C:\Users\beauv\.nuget\packages\system.windows.extensions\5.0.0</PkgSystem_Windows_Extensions>
-    <PkgSystem_Security_Principal_Windows Condition=" '$(PkgSystem_Security_Principal_Windows)' == '' ">C:\Users\beauv\.nuget\packages\system.security.principal.windows\4.7.0</PkgSystem_Security_Principal_Windows>
-    <PkgSystem_Security_AccessControl Condition=" '$(PkgSystem_Security_AccessControl)' == '' ">C:\Users\beauv\.nuget\packages\system.security.accesscontrol\4.7.0</PkgSystem_Security_AccessControl>
-    <PkgSystem_Security_Permissions Condition=" '$(PkgSystem_Security_Permissions)' == '' ">C:\Users\beauv\.nuget\packages\system.security.permissions\4.7.0</PkgSystem_Security_Permissions>
-    <PkgSystem_Security_Cryptography_ProtectedData Condition=" '$(PkgSystem_Security_Cryptography_ProtectedData)' == '' ">C:\Users\beauv\.nuget\packages\system.security.cryptography.protecteddata\5.0.0</PkgSystem_Security_Cryptography_ProtectedData>
-    <PkgSystem_Memory Condition=" '$(PkgSystem_Memory)' == '' ">C:\Users\beauv\.nuget\packages\system.memory\4.5.4</PkgSystem_Memory>
-    <PkgSystem_Configuration_ConfigurationManager Condition=" '$(PkgSystem_Configuration_ConfigurationManager)' == '' ">C:\Users\beauv\.nuget\packages\system.configuration.configurationmanager\4.7.0</PkgSystem_Configuration_ConfigurationManager>
-    <PkgMicrosoft_Win32_Registry Condition=" '$(PkgMicrosoft_Win32_Registry)' == '' ">C:\Users\beauv\.nuget\packages\microsoft.win32.registry\4.7.0</PkgMicrosoft_Win32_Registry>
-    <PkgSystem_Diagnostics_PerformanceCounter Condition=" '$(PkgSystem_Diagnostics_PerformanceCounter)' == '' ">C:\Users\beauv\.nuget\packages\system.diagnostics.performancecounter\4.7.0</PkgSystem_Diagnostics_PerformanceCounter>
-    <PkgSystem_Data_OleDb Condition=" '$(PkgSystem_Data_OleDb)' == '' ">C:\Users\beauv\.nuget\packages\system.data.oledb\4.7.1</PkgSystem_Data_OleDb>
-    <PkgOracle_ManagedDataAccess_Core Condition=" '$(PkgOracle_ManagedDataAccess_Core)' == '' ">C:\Users\beauv\.nuget\packages\oracle.manageddataaccess.core\2.19.91</PkgOracle_ManagedDataAccess_Core>
-    <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">C:\Users\beauv\.nuget\packages\fsharp.core\4.7.2</PkgFSharp_Core>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' AND '$(ExcludeRestorePackageImports)' != 'true' ">
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <PkgSystem_Security_Principal_Windows Condition=" '$(PkgSystem_Security_Principal_Windows)' == '' ">C:\Users\beauv\.nuget\packages\system.security.principal.windows\4.7.0</PkgSystem_Security_Principal_Windows>
     <PkgSystem_Security_AccessControl Condition=" '$(PkgSystem_Security_AccessControl)' == '' ">C:\Users\beauv\.nuget\packages\system.security.accesscontrol\4.7.0</PkgSystem_Security_AccessControl>
     <PkgSystem_Security_Permissions Condition=" '$(PkgSystem_Security_Permissions)' == '' ">C:\Users\beauv\.nuget\packages\system.security.permissions\4.7.0</PkgSystem_Security_Permissions>

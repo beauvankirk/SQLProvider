@@ -1,8 +1,13 @@
 C:\Users\beauv\fs\TypeProviders\SqlProvider\src\SqlProvider.Runtime\bin\Release\netstandard2.0\SqlProvider.Runtime.deps.json
 C:\Users\beauv\fs\TypeProviders\SqlProvider\src\SqlProvider.Runtime\bin\Release\netstandard2.0\SqlProvider.Runtime.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\src\SqlProvider.Runtime\bin\Release\netstandard2.0\SqlProvider.Runtime.pdb
+C:\Users\beauv\fs\TypeProviders\SqlProvider\src\SqlProvider.Runtime\bin\Release\netstandard2.0\SqlProvider.Runtime.xml
+C:\Users\beauv\fs\TypeProviders\SqlProvider\src\SqlProvider.Runtime\bin\Release\netstandard2.0\SqlProvider.DesignTime.dll
+C:\Users\beauv\fs\TypeProviders\SqlProvider\src\SqlProvider.Runtime\bin\Release\netstandard2.0\SqlProvider.DesignTime.pdb
 C:\Users\beauv\fs\TypeProviders\SqlProvider\src\SqlProvider.Runtime\obj\Release\netstandard2.0\SqlProvider.Runtime.fsprojAssemblyReference.cache
 C:\Users\beauv\fs\TypeProviders\SqlProvider\src\SqlProvider.Runtime\obj\Release\netstandard2.0\SqlProvider.Runtime.AssemblyInfoInputs.cache
 C:\Users\beauv\fs\TypeProviders\SqlProvider\src\SqlProvider.Runtime\obj\Release\netstandard2.0\SqlProvider.Runtime.AssemblyInfo.fs
+C:\Users\beauv\fs\TypeProviders\SqlProvider\src\SqlProvider.Runtime\obj\Release\netstandard2.0\SqlProvider.Runtime.fsproj.CopyComplete
 C:\Users\beauv\fs\TypeProviders\SqlProvider\src\SqlProvider.Runtime\obj\Release\netstandard2.0\SqlProvider.Runtime.dll
+C:\Users\beauv\fs\TypeProviders\SqlProvider\src\SqlProvider.Runtime\obj\Release\netstandard2.0\SqlProvider.Runtime.xml
 C:\Users\beauv\fs\TypeProviders\SqlProvider\src\SqlProvider.Runtime\obj\Release\netstandard2.0\SqlProvider.Runtime.pdb

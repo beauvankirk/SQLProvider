@@ -1,23 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <Import Project="..\..\netfx.props" />
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.0</TargetFrameworks>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <DisableImplicitFSharpCoreReference>true</DisableImplicitFSharpCoreReference>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <Compile Include="SqlProvider.Tests.fs" />
     <None Include="paket.references" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.15.1"/>
-    <ProjectReference Include="..\..\src\SqlProvider.Runtime\SqlProvider.Runtime.fsproj">
-      <Name>SqlProvider.Runtime</Name>
-      <Project>{7e90d6ce-a10b-4858-a5bc-41df7250cbca}</Project>
-      <Private>True</Private>
-    </ProjectReference>
+    <ProjectReference Include="..\..\src\SqlProvider.Runtime\SqlProvider.Runtime.fsproj" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

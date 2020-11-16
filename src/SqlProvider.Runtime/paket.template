@@ -23,7 +23,6 @@ tags
 files
     bin/Release/netstandard2.0/SqlProvider.Runtime.* ==> lib/netstandard2.0
     bin/Release/typeproviders/fsharp41/netstandard2.0/*.dll ==> typeproviders/fsharp41/netstandard2.0
-    bin/Release/typeproviders/fsharp41/netcoreapp3.1/*.dll ==> typeproviders/fsharp41/netcoreapp3.1
 references
     SqlProvider.Runtime.dll
 dependencies

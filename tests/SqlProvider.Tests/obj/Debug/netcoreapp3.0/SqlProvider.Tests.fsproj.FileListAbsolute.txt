@@ -1,11 +1,5 @@
-C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\obj\Debug\netcoreapp3.0\SqlProvider.Tests.fsprojAssemblyReference.cache
-C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\obj\Debug\netcoreapp3.0\SqlProvider.Tests.AssemblyInfoInputs.cache
-C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\obj\Debug\netcoreapp3.0\SqlProvider.Tests.AssemblyInfo.fs
-C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\NUnit3.TestAdapter.dll
-C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\NUnit3.TestAdapter.pdb
-C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\nunit.engine.dll
-C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\nunit.engine.api.dll
-C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\SqlProvider.Tests.dll.config
+C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\testhost.exe
+C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\testhost.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\SqlProvider.Tests.deps.json
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\SqlProvider.Tests.runtimeconfig.json
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\SqlProvider.Tests.runtimeconfig.dev.json
@@ -13,7 +7,6 @@ C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\ne
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\SqlProvider.Tests.pdb
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\FSharp.Core.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\Microsoft.VisualStudio.CodeCoverage.Shim.dll
-C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\Microsoft.DotNet.InternalAbstractions.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\Microsoft.TestPlatform.CoreUtilities.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\Microsoft.TestPlatform.PlatformAbstractions.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\Microsoft.VisualStudio.TestPlatform.ObjectModel.dll
@@ -21,12 +14,12 @@ C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\ne
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\Microsoft.TestPlatform.CrossPlatEngine.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\Microsoft.TestPlatform.Utilities.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\Microsoft.VisualStudio.TestPlatform.Common.dll
-C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\testhost.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\Microsoft.Win32.Registry.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\Newtonsoft.Json.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\NuGet.Frameworks.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\nunit.framework.dll
+C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\Oracle.ManagedDataAccess.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\System.Configuration.ConfigurationManager.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\System.Data.OleDb.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\System.Diagnostics.PerformanceCounter.dll
@@ -37,7 +30,6 @@ C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\ne
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\System.Security.Permissions.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\System.Security.Principal.Windows.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\System.Windows.Extensions.dll
-C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\System.Xml.XPath.XmlDocument.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\cs\FSharp.Core.resources.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\de\FSharp.Core.resources.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\es\FSharp.Core.resources.dll
@@ -130,6 +122,10 @@ C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\ne
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\SqlProvider.Runtime.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\SqlProvider.Runtime.pdb
+C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\bin\Debug\netcoreapp3.0\SqlProvider.Runtime.xml
+C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\obj\Debug\netcoreapp3.0\SqlProvider.Tests.fsprojAssemblyReference.cache
+C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\obj\Debug\netcoreapp3.0\SqlProvider.Tests.AssemblyInfoInputs.cache
+C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\obj\Debug\netcoreapp3.0\SqlProvider.Tests.AssemblyInfo.fs
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\obj\Debug\netcoreapp3.0\SqlProvider.Tests.fsproj.CopyComplete
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\obj\Debug\netcoreapp3.0\SqlProvider.Tests.dll
 C:\Users\beauv\fs\TypeProviders\SqlProvider\tests\SqlProvider.Tests\obj\Debug\netcoreapp3.0\SqlProvider.Tests.pdb

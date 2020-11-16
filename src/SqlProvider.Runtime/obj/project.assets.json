@@ -257,6 +257,32 @@
             "rid": "win"
           }
         }
+      },
+      "SqlProvider.DesignTime/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "FSharp.Core": "4.7.2",
+          "Microsoft.Win32.Registry": "4.7.0",
+          "Oracle.ManagedDataAccess.Core": "2.19.91",
+          "System.Buffers": "4.5.1",
+          "System.Configuration.ConfigurationManager": "4.7.0",
+          "System.Data.OleDb": "4.7.1",
+          "System.Diagnostics.PerformanceCounter": "4.7.0",
+          "System.Memory": "4.5.4",
+          "System.Numerics.Vectors": "4.5.0",
+          "System.Runtime.CompilerServices.Unsafe": "5.0.0",
+          "System.Security.AccessControl": "4.7.0",
+          "System.Security.Cryptography.ProtectedData": "5.0.0",
+          "System.Security.Permissions": "4.7.0",
+          "System.Security.Principal.Windows": "4.7.0"
+        },
+        "compile": {
+          "bin/placeholder/SqlProvider.DesignTime.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SqlProvider.DesignTime.dll": {}
+        }
       }
     }
   },
@@ -924,6 +950,11 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "SqlProvider.DesignTime/1.0.0": {
+      "type": "project",
+      "path": "../SqlProvider.DesignTime/SqlProvider.DesignTime.fsproj",
+      "msbuildProject": "../SqlProvider.DesignTime/SqlProvider.DesignTime.fsproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -932,6 +963,7 @@
       "Microsoft.Win32.Registry >= 4.7.0",
       "NETStandard.Library >= 2.0.3",
       "Oracle.ManagedDataAccess.Core >= 2.19.91",
+      "SqlProvider.DesignTime >= 1.0.0",
       "System.Buffers >= 4.5.1",
       "System.Configuration.ConfigurationManager >= 4.7.0",
       "System.Data.OleDb >= 4.7.1",
@@ -958,7 +990,6 @@
       "packagesPath": "C:\\Users\\beauv\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\beauv\\fs\\TypeProviders\\SqlProvider\\src\\SqlProvider.Runtime\\obj\\",
       "projectStyle": "PackageReference",
-      "crossTargeting": true,
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
@@ -974,7 +1005,12 @@
       "frameworks": {
         "netstandard2.0": {
           "targetAlias": "netstandard2.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\beauv\\fs\\TypeProviders\\SqlProvider\\src\\SqlProvider.DesignTime\\SqlProvider.DesignTime.fsproj": {
+              "projectPath": "C:\\Users\\beauv\\fs\\TypeProviders\\SqlProvider\\src\\SqlProvider.DesignTime\\SqlProvider.DesignTime.fsproj",
+              "privateAssets": "all"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -1008,7 +1044,6 @@
             "generatePathProperty": true
           },
           "Oracle.ManagedDataAccess.Core": {
-            "suppressParent": "All",
             "target": "Package",
             "version": "[2.19.91, )",
             "generatePathProperty": true
