@@ -1,56 +1,61 @@
+version 5.255.0
+storage: none
 source https://api.nuget.org/v3/index.json
 
-nuget FSharp.Compiler.Tools
-nuget Nuget.CommandLine
-nuget FAKE = 4.64.18
-nuget FSharp.Formatting
-// git http://github.com/fsprojects/FSharp.Formatting.git master
-nuget FSharp.Core  redirects:force
-nuget RazorEngine
-nuget NUnit = 2.6.4
-nuget NUnit.Runners = 2.6.4
-nuget SourceLink.Fake
-nuget System.Data.SqlClient
 
-group Standard
-    source https://api.nuget.org/v3/index.json
+frameworks:  netcoreapp3.1, netstandard2.0
 
-    nuget FSharp.Core
-    nuget System.Data.OleDb
-    nuget System.Runtime
-    nuget System.Runtime.Loader
-    nuget System.Runtime.Serialization.Primitives
-    nuget System.Runtime.Serialization.Formatters
-    nuget System.IO
-    nuget System.Console
-    nuget System.Reflection
-    nuget System.Reflection.TypeExtensions
-    nuget System.Data.SqlClient
-    nuget System.Data.Common
-    nuget System.Data.Odbc
-	nuget Microsoft.Data.SQLite
-	nuget FSharp.Compiler.Service
+# Add the nuget packages you use here
+nuget FSharp.Core < 5.0
 
-github fsharp/FAKE modules/Octokit/Octokit.fsx
+# nuget NETStandard.Library.NETFramework
+# nuget System.Text.Encoding.CodePages
 
-group SourceFiles
-    source https://api.nuget.org/v3/index.json
+# THis lines are used by Paket to get the latest version of the Type Provider SDK files
+github fsprojects/FSharp.TypeProviders.SDK src/ProvidedTypes.fsi
+github fsprojects/FSharp.TypeProviders.SDK src/ProvidedTypes.fs
+nuget System.Data.OleDb
+nuget Microsoft.Win32.Registry < 5.0
+nuget System.Configuration.ConfigurationManager < 5.0
+nuget System.Diagnostics.PerformanceCounter < 5.0
+nuget System.Memory < 5.0
+nuget System.Security.Principal.Windows < 5.0
+nuget Oracle.ManagedDataAccess.Core ~> 2.19.91 copy_local: true
 
-    github fsprojects/FSharp.TypeProviders.SDK src/ProvidedTypes.fsi
-    github fsprojects/FSharp.TypeProviders.SDK src/ProvidedTypes.fs
-    github Thorium/Linq.Expression.Optimizer src/Code/ExpressionOptimizer.fs
-
-group Scripts
-    source https://api.nuget.org/v3/index.json
-
-    nuget MySql.Data < 7.0.0
-    nuget MySqlConnector
-    nuget Newtonsoft.Json
-    nuget Npgsql
-    nuget Oracle.ManagedDataAccess
-    nuget FirebirdSql.Data.FirebirdClient
-    nuget System.Data.SQLite.Core
-    nuget System.Data.SQLite.Linq
-    // nuget Microsoft.Data.Sqlite.Core.Backport // Needed if we want currently Core support on Linux.
+group Test
+  source https://api.nuget.org/v3/index.json
+  frameworks:  netcoreapp3.0,netstandard2.0
+  storage: none
+  generate_load_scripts: true
+  nuget FSharp.Core < 5.0
+  nuget NUnit
+  nuget NUnit.Console
+  nuget NUnit3TestAdapter version_in_path: true
+  nuget Oracle.ManagedDataAccess.Core ~> 2.19.91 copy_local: true
+  nuget Microsoft.Win32.Registry < 5.0
+  nuget Microsoft.NETCore.Platforms < 5.0
+  nuget Microsoft.NETCore.Targets < 5.0
+  nuget System.Buffers < 5.0
+  nuget System.Memory < 5.0
+  nuget System.Security.AccessControl < 5.0
+  nuget System.Security.Principal.Windows < 5.0
+  nuget System.Reactive < 5.0
+  nuget Nuget.Packaging
+  nuget Nuget.Protocol
+  nuget Nuget.Common 
+  nuget Nuget.Frameworks
+  nuget Nuget.Versioning
+  nuget Nuget.CommandLine
+  nuget Nuget.Configuration
+  nuget System.Security.Cryptography.Pkcs 5.0.0
+  nuget System.Security.Cryptography.Cng 5.0.0
+  nuget System.Formats.Asn1  
+  nuget System.Net.Http.WinHttpHandler < 5.0.0
+  nuget System.CodeDom < 5.0.0
+  nuget System.Collections.Immutable < 5.0.0
+  nuget System.Resources.Extensions < 5.0.0
+  nuget System.Runtime.CompilerServices.Unsafe < 5.0.0
+  nuget System.Threading.Tasks.Dataflow < 5.0.0
+  nuget System.Security.Cryptography.ProtectedData < 5.0.0
 
 

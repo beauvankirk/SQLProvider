@@ -1,0 +1,14 @@
+FSharp.Core,4.7.2,Direct,Main,false,true
+Oracle.ManagedDataAccess.Core,2.19.91,Direct,Main,true,true
+System.Buffers,4.5.1,Transitive,Main,false,true
+System.Numerics.Vectors,4.5,Transitive,Main,false,true
+System.Runtime.CompilerServices.Unsafe,5.0,Transitive,Main,false,true
+System.Memory,4.5.4,Direct,Main,false,true
+System.Security.Cryptography.ProtectedData,5.0,Transitive,Main,false,true
+System.Security.Principal.Windows,4.7,Direct,Main,false,true
+System.Security.AccessControl,4.7,Transitive,Main,false,true
+Microsoft.Win32.Registry,4.7,Direct,Main,false,true
+System.Security.Permissions,4.7,Transitive,Main,false,true
+System.Configuration.ConfigurationManager,4.7,Direct,Main,false,true
+System.Diagnostics.PerformanceCounter,4.7,Direct,Main,false,true
+System.Data.OleDb,4.7.1,Direct,Main,false,true
